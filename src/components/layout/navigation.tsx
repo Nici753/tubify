@@ -1,11 +1,10 @@
-import {ModeToggle} from "./mode-togle.tsx";
+import { ModeToggle } from "./mode-togle.tsx";
 
 export function Navigation() {
-
-    return (
-        <div>
-            <ModeToggle/>
-        </div>
-    )
+  return (
+    <div>
+      <ModeToggle />
+    </div>
+  );
 }
-export default Navigation
+export default Navigation;
