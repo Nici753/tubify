@@ -1,12 +1,19 @@
 import { Button } from '../ui/Button.tsx';
 import { Youtube } from 'lucide-react';
+import { useGoogleLogin } from '@react-oauth/google';
 
 export function YoutubeLoginButton() {
-  function handleLogin() {
+  const login = useGoogleLogin({
+    scope: 'https://www.googleapis.com/auth/youtube',
+    onSuccess: tokenResponse =>
+      localStorage.setItem('youtube_access_token', tokenResponse.access_token),
+    onError: errorResponse =>
+      console.error('Youtube Login failed: ' + errorResponse)
+  });
+
+  function handleLogin() : void {
     console.log('Login with YouTube');
-    localStorage.setItem('youtube_access_token', '1234');
-    localStorage.setItem('user_name', 'John Doe');
-    window.location.reload();
+    login();
   }
 
   return (
