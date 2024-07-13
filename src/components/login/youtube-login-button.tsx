@@ -4,6 +4,10 @@ import { Youtube } from 'lucide-react';
 export function YoutubeLoginButton() {
   function handleLogin() {
     console.log('Login with YouTube');
+    localStorage.setItem('youtube_access_token', '1234');
+    localStorage.setItem('user_name', 'John Doe');
+    window.location.reload();
+
   }
 
   return (
