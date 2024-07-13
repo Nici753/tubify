@@ -4,9 +4,6 @@ import { Headphones } from 'lucide-react';
 export function SpotifyLoginButton() {
   function handleLogin() {
     console.log('Login with Spotify');
-    localStorage.setItem('spotify_access_token', '5678');
-    //TODO: refresh page
-    window.location.reload();
   }
 
   return (
