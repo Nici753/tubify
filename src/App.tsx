@@ -1,10 +1,10 @@
-import { ThemeProvider } from "./components/layout/theme-provider";
-import { Navigation } from "./components/layout/navigation";
+import { ThemeProvider } from './components/layout/theme-provider';
+import { View } from './components/layout/View.tsx';
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      {<Navigation />}
+      {<View />}
     </ThemeProvider>
   );
 }
