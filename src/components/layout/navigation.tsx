@@ -1,6 +1,7 @@
 import { ModeToggle } from "./mode-togle.tsx";
 import { YoutubeLoginButton } from "../login/youtube-login-button.tsx";
 import { SpotifyLoginButton } from "../login/spotify-login-button.tsx";
+import { NameTag } from './name-tag.tsx';
 
 export function Navigation() {
   return (
@@ -8,6 +9,9 @@ export function Navigation() {
       <ModeToggle />
       <SpotifyLoginButton />
       <YoutubeLoginButton />
+      <div className={"flex-auto content-center"}>
+        <NameTag />
+      </div>
     </div>
   );
 }
