@@ -1,4 +1,8 @@
 export function NameTag() {
-  const user = 'John Doe';
-  return <p className={'text-lg'}> Welcome {user}</p>;
+  const user: string = localStorage.getItem('user_name');
+  return (
+    <div className={' flex flex-row content-center'}>
+      <text className={'text-lg'}>Welcome {user}</text>
+    </div>
+  );
 }
