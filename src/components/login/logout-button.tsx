@@ -4,9 +4,7 @@ import { LogOut } from 'lucide-react';
 export function LogoutButton() {
   function handleLogin() {
     console.log('Logout');
-    localStorage.removeItem('youtube_access_token');
-    localStorage.removeItem('spotify_access_token');
-    localStorage.removeItem('user_name');
+    localStorage.clear();
     window.location.reload();
   }
 
