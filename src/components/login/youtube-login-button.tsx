@@ -13,7 +13,7 @@ export function YoutubeLoginButton() {
           {
             method: 'GET',
             headers: {
-              'Authorization': `Bearer ${tokenResponse.access_token}`,
+              Authorization: `Bearer ${tokenResponse.access_token}`,
             },
           },
         );
