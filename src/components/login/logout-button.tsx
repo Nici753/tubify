@@ -3,7 +3,6 @@ import { LogOut } from 'lucide-react';
 
 export function LogoutButton() {
   function handleLogin() {
-    console.log('Logout');
     localStorage.clear();
     window.location.reload();
   }

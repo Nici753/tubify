@@ -39,8 +39,8 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
 
   async getAllUsersPlaylist(): Promise<Playlist[]> {
     try {
-      const user_display_name = await this.getUserName();
-      let response = await this.fetchFromSpotify('/me/playlists');
+      const user_display_name :string = await this.getUserName();
+      let response:Response = await this.fetchFromSpotify('/me/playlists');
       let data = await response.json();
 
       // Save data.items to an array of type Playlist, filtering out playlists not owned by the user
@@ -67,7 +67,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
           }));
         playlists = [...playlists, ...newPlaylists];
       }
-      console.log(playlists);
+
       return playlists;
     } catch (error) {
       console.error('Error fetching user playlists:', error);
@@ -75,8 +75,39 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
   }
 
 
-  getPlaylistItems(playlistId: string): Promise<Song[]> {
-    return Promise.resolve([]);
+  async getPlaylistItems(playlistId: string): Promise<Song[]> {
+    let response:Response = await this.fetchFromSpotify(`/playlists/${playlistId}/tracks`);
+    let data = await response.json();
+    console.log(data.items);
+
+    let songs: Song[] = data.items.map((item) => ({
+      SpotifyId: item.SpotifyId,
+      name: item.name,
+      imageUrl: item.album.images[0]?.url,
+      SpotifyUrl: item.external_urls.spotify,
+      //artists: item.artists.map((artist) => artist.name),
+    }));
+
+    // Make a while loop to get the next and add the new data.items to the array
+    /*
+    while (data.next) {
+      response = await this.fetchFromSpotify(data.next);
+      data = await response.json();
+      const newSongs: Song[] = data.tracks.items.map((item) => ({
+        SpotifyId: item.track.id,
+        name: item.track.name,
+        imageUrl: item.track.album.images[0]?.url,
+        SpotifyUrl: item.track.external_urls.spotify,
+        artists: item.track.artists.map((artist) => artist.name),
+      }));
+      songs = [...songs, ...newSongs];
+    }
+*/
+    return songs;
+  }
+
+  async delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
   }
 
   async getUserName(): Promise<string> {
@@ -88,5 +119,10 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
   async importPlaylist() {
     const playlists: Playlist[] = await this.getAllUsersPlaylist();
     console.log(playlists);
+  }
+
+  async test(): Promise<void> {
+    const songs: Song[] = await this.getPlaylistItems('24ncUKUQHXLRNHly6Wor02' as string);
+    console.log(songs)
   }
 }

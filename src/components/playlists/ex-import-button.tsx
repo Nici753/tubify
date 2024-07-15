@@ -9,10 +9,14 @@ import { Folder, Download, Upload } from 'lucide-react';
 import { SpotifyAPIService} from '../../lib/apis/SpotifyAPIService.ts';
 
 export function ExImportButton() {
+  const spotifyApi = new SpotifyAPIService();
 
   const importPlaylist = () => {
-    const spotifyApi = new SpotifyAPIService();
     spotifyApi.importPlaylist();
+  }
+
+  const exportPlaylist = () => {
+    spotifyApi.test();
   }
 
   return (
@@ -27,7 +31,7 @@ export function ExImportButton() {
           <Download className="mr-3" />
           Import
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => exportPlaylist()}>
           <Upload className="mr-3" />
           Export
         </DropdownMenuItem>

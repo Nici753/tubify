@@ -24,7 +24,7 @@ export function YoutubeLoginButton() {
         localStorage.setItem('user_picture', userInfo.picture);
         window.location.reload();
       } catch (error) {
-        console.log('Failed to fetch user information: ' + error);
+        console.error('Failed to fetch user information: ' + error);
       }
     },
     onError: (errorResponse) =>
@@ -32,7 +32,6 @@ export function YoutubeLoginButton() {
   });
 
   function handleLogin(): void {
-    console.log('Login with YouTube');
     login();
   }
 
