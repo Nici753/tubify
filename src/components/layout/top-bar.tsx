@@ -4,6 +4,7 @@ import { SpotifyLoginButton } from '../login/spotify-login-button.tsx';
 import { LogoutButton } from '../login/logout-button.tsx';
 import { NameTag } from './name-tag.tsx';
 import { useEffect } from 'react';
+import { ExImportButton } from '../playlists/ex-import-button.tsx';
 
 export function TopBar() {
   let youtubeLoggedIn: boolean = false;
@@ -47,6 +48,7 @@ export function TopBar() {
   return (
     <div className={'flex flex-row-reverse p-3 border-b-4'}>
       <ModeToggle />
+      {spotifyLoggedIn & youtubeLoggedIn && <ExImportButton />}
       {!spotifyLoggedIn && <SpotifyLoginButton />}
       {!youtubeLoggedIn && <YoutubeLoginButton />}
       {youtubeLoggedIn && <LogoutButton />}
