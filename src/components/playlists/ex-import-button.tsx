@@ -6,18 +6,18 @@ import {
 } from '../ui/dropdown-menu.tsx';
 import { Button } from '../ui/Button.tsx';
 import { Folder, Download, Upload } from 'lucide-react';
-import { SpotifyAPIService} from '../../lib/apis/SpotifyAPIService.ts';
+import { SpotifyAPIService } from '../../lib/apis/SpotifyAPIService.ts';
 
 export function ExImportButton() {
   const spotifyApi = new SpotifyAPIService();
 
   const importPlaylist = () => {
     spotifyApi.importPlaylist();
-  }
+  };
 
   const exportPlaylist = () => {
-    spotifyApi.test();
-  }
+
+  };
 
   return (
     <DropdownMenu>
