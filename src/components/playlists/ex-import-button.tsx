@@ -27,6 +27,7 @@ export function ExImportButton() {
 
   function deletePlaylist() {
     store.dispatch(deleteAllPlaylists());
+    localStorage.removeItem('playlists');
   }
 
   return (
