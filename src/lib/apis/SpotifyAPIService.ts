@@ -65,10 +65,18 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
         playlists = [...playlists, ...newPlaylists];
       }
 
+      console.log('Loading ' + playlists.length + ' playlists');
+      let currentPlaylist = 0;
+
       for (const playlist of playlists) {
+        console.log('Loading playlist ' + playlist.name + '...');
         await this.delay(1000);
         playlist.tracks = await this.getPlaylistItems(playlist.SpotifyId);
+        currentPlaylist++;
+        console.log('Loaded ' + currentPlaylist + ' Playlists');
       }
+
+      console.log('Finished loading playlists');
 
       return playlists;
     } catch (error) {
