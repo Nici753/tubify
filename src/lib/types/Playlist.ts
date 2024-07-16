@@ -1,6 +1,6 @@
-import { Song } from 'Song.ts';
+import { Song } from './Song';
 
-type Playlist = {
+export type Playlist = {
   SpotifyId?: string;
   YoutubeId?: string;
   name: string;
@@ -10,4 +10,10 @@ type Playlist = {
   tracks?: Array<Song>;
 };
 
-export type { Playlist };
+export type PlaylistState = {
+  playlists: Playlist[];
+};
+
+export const initialState: PlaylistState = {
+  playlists: [],
+};

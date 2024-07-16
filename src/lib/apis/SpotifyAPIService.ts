@@ -125,6 +125,6 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
   }
 
   async importPlaylist() {
-    const playlists: Playlist[] = await this.getAllUsersPlaylist();
+    return await this.getAllUsersPlaylist();
   }
 }

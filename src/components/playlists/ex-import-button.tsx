@@ -7,17 +7,22 @@ import {
 import { Button } from '../ui/Button.tsx';
 import { Folder, Download, Upload } from 'lucide-react';
 import { SpotifyAPIService } from '../../lib/apis/SpotifyAPIService.ts';
+import { Playlist } from '../../lib/types/Playlist.ts';
+import { useDispatch } from 'react-redux';
+import { addPlaylist } from '../../lib/store/actions';
 
 export function ExImportButton() {
   const spotifyApi = new SpotifyAPIService();
+  const dispatch = useDispatch();
 
-  const importPlaylist = () => {
-    spotifyApi.importPlaylist();
+  const importPlaylist = async () => {
+    const playlists: Playlist[] = await spotifyApi.importPlaylist();
+    playlists.forEach((playlist) => {
+      dispatch(addPlaylist(playlist));
+    });
   };
 
-  const exportPlaylist = () => {
-
-  };
+  const exportPlaylist = () => {};
 
   return (
     <DropdownMenu>
