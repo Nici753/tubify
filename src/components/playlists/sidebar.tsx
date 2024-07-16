@@ -4,7 +4,6 @@ import React from 'react';
 
 export const Sidebar: React.FC = () => {
   const playlists = useSelector((state: PlaylistState) => {
-    console.log(state);
     return state.playlists.playlists;
   });
 
