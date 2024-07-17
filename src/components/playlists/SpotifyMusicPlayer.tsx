@@ -12,7 +12,12 @@ const SpotifyMusicPlayer: React.FC<SpotifyMusicPlayerProps> = ({
   const src = `https://open.spotify.com/embed/track/${spotifyUri}`;
 
   return (
-    <iframe src={src} width={parentWidth} height="100" allow="encrypted-media"></iframe>
+    <iframe
+      src={src}
+      width={parentWidth}
+      height="100"
+      allow="encrypted-media"
+    ></iframe>
   );
 };
 

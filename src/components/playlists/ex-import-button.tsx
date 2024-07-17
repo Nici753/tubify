@@ -9,7 +9,7 @@ import { Folder, Download, Upload, Trash2 } from 'lucide-react';
 import { SpotifyAPIService } from '../../lib/apis/SpotifyAPIService.ts';
 import { Playlist } from '../../lib/types/Playlist.ts';
 import { useDispatch } from 'react-redux';
-import { addPlaylist, deleteAllPlaylists } from '../../lib/store/actions';
+import { addPlaylist, deleteAllPlaylists, selectPlaylist } from '../../lib/store/actions';
 import { store } from '../../lib/store/store.ts';
 
 export function ExImportButton() {
@@ -35,12 +35,12 @@ export function ExImportButton() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="mr-3" asChild>
+      <DropdownMenuTrigger className={'mr-3'} asChild>
         <Button variant="outline" size="icon">
           <Folder />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent>
         <DropdownMenuItem onClick={() => importPlaylist()}>
           <Download className="mr-3" />
           Import

@@ -17,7 +17,9 @@ export function Content() {
       if (!document.getElementById('parent-width')) {
         return null;
       } else {
-        setParentWidth(document.getElementById('parent-width').clientWidth - 24);
+        setParentWidth(
+          document.getElementById('parent-width').clientWidth - 124,
+        );
       }
     };
     updateParentWidth();
@@ -32,34 +34,44 @@ export function Content() {
   }
 
   return (
-    <div className={'col-span-4 lg:col-span-3 flex flex-col px-3 pt-3 pb-32 h-fulls'} id="parent-width">
+    <div
+      className={
+        'col-span-4 lg:col-span-3 flex flex-col px-3 pt-3 pb-32 h-fulls'
+      }
+      id="parent-width"
+    >
       <h1 className={'text-3xl font-bold'}>{selectedPlaylist.name}</h1>
-      <div className="grid grid-cols-1 gap-2">
+      <div className={'grid grid-cols-1 gap-2'}>
         {selectedPlaylist.tracks?.map((song) => (
           <div
             key={song.SpotifyId}
-            className="flex items-center space-x-4 p-1 group"
+            className={'flex items-center space-x-4 p-1 group'}
           >
             <CirclePlay
-              className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:cursor-pointer"
+              className={'w-8 h-8 opacity-0 group-hover:opacity-100 hover:cursor-pointer'}
               onClick={() => setCurrentSong(song.SpotifyId)}
             />
             <img
               src={song.imageUrl}
               alt={song.name}
-              className="w-12 h-12 rounded"
+              className={'w-12 h-12 rounded'}
             />
-            <div className="flex flex-col truncate">
-              <span className="text-left truncate">{song.name}</span>
-              <span className="text-left text-sm text-gray-500 truncate">
+            <div className={'flex flex-col truncate'}>
+              <span className={'text-left truncate'}>{song.name}</span>
+              <span className={'text-left text-sm text-gray-500 truncate'}>
                 {song.artists?.join(', ')}
               </span>
             </div>
           </div>
         ))}
       </div>
-      <div className={'fixed bottom-2'}>
-        {currentSong && <SpotifyMusicPlayer spotifyUri={currentSong} parentWidth={parentWidth}/>}
+      <div className={'fixed bottom-2 right-2'}>
+        {currentSong && (
+          <SpotifyMusicPlayer
+            spotifyUri={currentSong}
+            parentWidth={parentWidth}
+          />
+        )}
       </div>
     </div>
   );

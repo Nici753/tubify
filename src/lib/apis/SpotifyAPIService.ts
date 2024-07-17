@@ -3,8 +3,11 @@ import { Song } from '../types/Song.ts';
 
 export interface SpotifyAPIInterface {
   fetchFromSpotify(endpoint: string): Promise<Response>;
+
   getUserName(): Promise<string>;
+
   importPlaylist(): void;
+
   getAllUsersPlaylist(): Promise<Playlist[]>;
 
   getPlaylistItems(playlistId: string | undefined): Promise<Song[]>;
@@ -12,7 +15,10 @@ export interface SpotifyAPIInterface {
 
 export class SpotifyAPIService implements SpotifyAPIInterface {
   private static instance: SpotifyAPIService;
-  private constructor() {}
+
+  private constructor() {
+  }
+
   public static getInstance(): SpotifyAPIService {
     if (!SpotifyAPIService.instance) {
       SpotifyAPIService.instance = new SpotifyAPIService();
@@ -50,7 +56,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
           SpotifyUrl: item.external_urls.spotify,
         }));
 
-      // Make a while loop to get the next and add the new data.items to the array
+      // handling spotify pagination
       while (data.next) {
         response = await this.fetchFromSpotify(data.next);
         data = await response.json();
@@ -98,7 +104,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
       artists: item.track.artists.map((artist) => artist.name),
     }));
 
-    // Make a while loop to get the next and add the new data.items to the array
+    // handling spotify pagination
     while (data.next) {
       response = await this.fetchFromSpotify(data.next);
       data = await response.json();
