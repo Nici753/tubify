@@ -58,7 +58,7 @@ export function Content() {
             />
             <div className={'flex flex-col truncate'}>
               <span className={'text-left truncate'}>{song.name}</span>
-              <span className={'text-left text-sm text-gray-500 truncate'}>
+              <span className={'text-left text-sm text-zinc-800 dark:text-gray-300 truncate'}>
                 {song.artists?.join(', ')}
               </span>
             </div>
