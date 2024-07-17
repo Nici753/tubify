@@ -1,4 +1,23 @@
-# React + TypeScript + Vite
+# Tubify
+A simple music player built with React, TypeScript, and Vite.
+Will transcribe your playlists from Spotify to YouTube.
+
+## how to start
+add .env file with the following content:
+```
+VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
+VITE_GOOGLE_CLIENT_ID=your_google_client_id
+```
+
+first install [bun!](https://bun.sh/) alternatively you can use npm or yarn
+
+then run the following commands:
+```bash
+bun install
+bun dev
+```
+
+## React + TypeScript + Vite + Bun
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
