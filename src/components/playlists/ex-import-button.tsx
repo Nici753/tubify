@@ -17,6 +17,9 @@ export function ExImportButton() {
   const dispatch = useDispatch();
 
   const importPlaylist = async () => {
+    if (localStorage.getItem('playlists')) {
+      deletePlaylist();
+    }
     const playlists: Playlist[] = await spotifyApi.importPlaylist();
     playlists.forEach((playlist) => {
       dispatch(addPlaylist(playlist));
