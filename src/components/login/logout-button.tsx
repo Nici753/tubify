@@ -3,7 +3,12 @@ import { LogOut } from 'lucide-react';
 
 export function LogoutButton() {
   function handleLogin() {
-    localStorage.clear();
+    // localStorage.clear();
+    localStorage.removeItem('spotify_access_token');
+    localStorage.removeItem('youtube_access_token');
+    localStorage.removeItem('user_name');
+    localStorage.removeItem('user_email');
+    localStorage.removeItem('user_picture');
     window.location.reload();
   }
 
