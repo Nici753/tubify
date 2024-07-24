@@ -2,6 +2,21 @@
 A simple music player built with React, TypeScript, and Vite.
 Will transcribe your playlists from Spotify to YouTube.
 
+## next steps
+### adding YouTube
+- [ ] make helper function for deleting and updating playlists
+- [ ] make a update playlist button
+- [ ] search songs on YouTube and add them to the playlist
+- [ ] get your playlists from YouTube
+- [ ] create a YouTube playlist
+- [ ] add songs to a YouTube playlist
+
+### ui improvements
+- [ ] make sidebar and component resizable https://ui.shadcn.com/docs/components/resizable
+- [ ] make sidebar and component scrollable https://ui.shadcn.com/docs/components/scroll-area
+- [ ] add toast notifications about import status
+- [ ] add loading spinner
+
 ## how to start
 add .env file with the following content:
 ```
