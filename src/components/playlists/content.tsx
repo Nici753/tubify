@@ -48,7 +48,9 @@ export function Content() {
             className={'flex items-center space-x-4 p-1 group'}
           >
             <CirclePlay
-              className={'w-8 h-8 opacity-0 group-hover:opacity-100 hover:cursor-pointer'}
+              className={
+                'w-8 h-8 opacity-0 group-hover:opacity-100 hover:cursor-pointer'
+              }
               onClick={() => setCurrentSong(song.SpotifyId)}
             />
             <img
@@ -58,7 +60,11 @@ export function Content() {
             />
             <div className={'flex flex-col truncate'}>
               <span className={'text-left truncate'}>{song.name}</span>
-              <span className={'text-left text-sm text-zinc-800 dark:text-gray-300 truncate'}>
+              <span
+                className={
+                  'text-left text-sm text-zinc-800 dark:text-gray-300 truncate'
+                }
+              >
                 {song.artists?.join(', ')}
               </span>
             </div>

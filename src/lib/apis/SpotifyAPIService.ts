@@ -16,8 +16,7 @@ export interface SpotifyAPIInterface {
 export class SpotifyAPIService implements SpotifyAPIInterface {
   private static instance: SpotifyAPIService;
 
-  private constructor() {
-  }
+  private constructor() {}
 
   public static getInstance(): SpotifyAPIService {
     if (!SpotifyAPIService.instance) {

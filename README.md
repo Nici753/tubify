@@ -1,9 +1,12 @@
 # Tubify
+
 A simple music player built with React, TypeScript, and Vite.
 Will transcribe your playlists from Spotify to YouTube.
 
 ## next steps
+
 ### adding YouTube
+
 - [ ] make helper function for deleting and updating playlists
 - [ ] make a update playlist button
 - [ ] search songs on YouTube and add them to the playlist
@@ -12,13 +15,16 @@ Will transcribe your playlists from Spotify to YouTube.
 - [ ] add songs to a YouTube playlist
 
 ### ui improvements
+
 - [ ] make sidebar and component resizable https://ui.shadcn.com/docs/components/resizable
 - [ ] make sidebar and component scrollable https://ui.shadcn.com/docs/components/scroll-area
 - [ ] add toast notifications about import status
 - [ ] add loading spinner
 
 ## how to start
+
 add .env file with the following content:
+
 ```
 VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
 VITE_GOOGLE_CLIENT_ID=your_google_client_id
@@ -27,6 +33,7 @@ VITE_GOOGLE_CLIENT_ID=your_google_client_id
 first install [bun!](https://bun.sh/) alternatively you can use npm or yarn
 
 then run the following commands:
+
 ```bash
 bun install
 bun dev
