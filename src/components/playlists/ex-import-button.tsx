@@ -55,10 +55,19 @@ export function ExImportButton() {
     dispatch(selectPlaylist(null));
   }
 
-  function updatePlaylist(playlistToUpdate: Playlist) {
+  async function updatePlaylist(playlistToUpdate: Playlist) {
     setIsModalOpen(false);
-    console.log('updating playlists');
-    const updatetedPlaylist = youtubeApi.updatePlaylist(playlistToUpdate);
+    const updatedPlaylist = await youtubeApi.updatePlaylist(playlistToUpdate);
+    const allPlaylists = playlists.filter(
+      (playlist: Playlist) => playlist.SpotifyId !== playlistToUpdate.SpotifyId,
+    );
+    allPlaylists.push(updatedPlaylist);
+
+    deletePlaylist();
+
+    allPlaylists.forEach((playlist: Playlist) => {
+      dispatch(addPlaylist(playlist));
+    });
   }
 
   return (

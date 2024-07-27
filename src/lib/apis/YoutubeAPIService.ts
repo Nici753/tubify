@@ -30,15 +30,13 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
 
   async searchSongOnYoutube(song: Song): Promise<Song> {
     const query: string = `${song.name} ${song.artists.join(', ')}`;
-    console.log('Query: ' + query);
-
     const search_url: string = `?part=snippet&maxResults=1&q=${query}`;
+
     const response: Response = await this.youtubeRequest(
       `/search/${search_url}`,
       'GET',
     );
     const data: JSON = await response.json();
-    console.log('Data: ' + data);
     if (data.items.length > 0) {
       song.YoutubeId = data.items[0].id.videoId;
       song.YoutubeUrl = `https://www.youtube.com/watch?v=${song.YoutubeId}`;
@@ -47,16 +45,13 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
   }
 
   async updatePlaylist(playlist: Playlist): Promise<Playlist> {
-    console.log(playlist);
     playlist.tracks?.forEach((song) => {
       const youtubeSong = this.searchSongOnYoutube(song);
       if (youtubeSong.YoutubeId) {
         song.YoutubeId = youtubeSong.YoutubeId;
         song.YoutubeUrl = youtubeSong.YoutubeUrl;
       }
-      console.log(song);
     });
-    console.log('New Playlist: ' + playlist);
 
     return playlist;
   }
