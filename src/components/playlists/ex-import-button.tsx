@@ -57,7 +57,7 @@ export function ExImportButton() {
 
   function updatePlaylistLocally(updatedPlaylist: Playlist) {
     const allPlaylists = playlists.filter(
-      (playlist: Playlist) => playlist.SpotifyId !== playlistToUpdate.SpotifyId,
+      (playlist: Playlist) => playlist.SpotifyId !== updatedPlaylist.SpotifyId,
     );
     allPlaylists.push(updatedPlaylist);
 
