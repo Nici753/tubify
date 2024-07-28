@@ -15,11 +15,11 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     return YoutubeAPIService.instance;
   }
 
-  async youtubeRequest(endpoint: string, method: string): Promise<Response> {
+  async youtubeGetRequest(endpoint: string): Promise<Response> {
     const request: Request = new Request(
       `https://www.googleapis.com/youtube/v3${endpoint}`,
       {
-        method: method,
+        method: 'GET',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('youtube_access_token')}`,
         },
@@ -32,9 +32,8 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     const query: string = `${song.name} ${song.artists.join(', ')}`;
     const search_url: string = `?part=snippet&maxResults=1&q=${query}`;
 
-    const response: Response = await this.youtubeRequest(
-      `/search/${search_url}`,
-      'GET',
+    const response: Response = await this.youtubeGetRequest(
+      `/search/${search_url}`
     );
     const data: JSON = await response.json();
     if (data.items.length > 0) {
