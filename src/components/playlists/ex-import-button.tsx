@@ -39,7 +39,7 @@ export function ExImportButton() {
 
   const importPlaylist = async () => {
     if (localStorage.getItem('playlists')) {
-      deletePlaylist();
+      deletePlaylistLocally();
     }
     const playlists: Playlist[] = await spotifyApi.importPlaylist();
     playlists.forEach((playlist) => {
@@ -49,25 +49,29 @@ export function ExImportButton() {
 
   const exportPlaylist = () => {};
 
-  function deletePlaylist() {
+  function deletePlaylistLocally() {
     store.dispatch(deleteAllPlaylists());
     localStorage.removeItem('playlists');
     dispatch(selectPlaylist(null));
   }
 
-  async function updatePlaylist(playlistToUpdate: Playlist) {
-    setIsModalOpen(false);
-    const updatedPlaylist = await youtubeApi.updatePlaylist(playlistToUpdate);
+  function updatePlaylistLocally(updatedPlaylist: Playlist) {
     const allPlaylists = playlists.filter(
       (playlist: Playlist) => playlist.SpotifyId !== playlistToUpdate.SpotifyId,
     );
     allPlaylists.push(updatedPlaylist);
 
-    deletePlaylist();
+    deletePlaylistLocally();
 
     allPlaylists.forEach((playlist: Playlist) => {
       dispatch(addPlaylist(playlist));
     });
+  }
+
+  async function updatePlaylist(playlistToUpdate: Playlist) {
+    setIsModalOpen(false);
+    const updatedPlaylist = await youtubeApi.updatePlaylist(playlistToUpdate);
+    updatePlaylistLocally(updatedPlaylist);
   }
 
   return (
@@ -91,7 +95,7 @@ export function ExImportButton() {
             <Upload className="mr-3" />
             Export
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => deletePlaylist()}>
+          <DropdownMenuItem onClick={() => deletePlaylistLocally()}>
             <Trash2 className="mr-3" />
             Delete
           </DropdownMenuItem>

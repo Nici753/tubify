@@ -7,9 +7,9 @@ Will transcribe your playlists from Spotify to YouTube.
 
 ### adding YouTube
 
-- [ ] make helper function for deleting and updating playlists
-- [ ] make a update playlist button
-- [ ] search songs on YouTube and add them to the playlist
+- [x] make helper function for deleting and updating playlists
+- [x] make a update playlist button
+- [x] search songs on YouTube and add them to the playlist
 - [ ] get your playlists from YouTube
 - [ ] create a YouTube playlist
 - [ ] add songs to a YouTube playlist
