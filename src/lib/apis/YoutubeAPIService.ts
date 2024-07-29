@@ -52,12 +52,10 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
       `/search/${search_url}`,
     );
     const data: JSON = await response.json();
-    console.log(data);
     if (data.items.length > 0) {
       song.YoutubeId = data.items[0].id.videoId;
       song.YoutubeUrl = `https://www.youtube.com/watch?v=${song.YoutubeId}`;
     }
-    console.log(song);
     return song;
   }
 
@@ -69,7 +67,6 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
         song.YoutubeUrl = youtubeSong.YoutubeUrl;
       }
     });
-    console.log(playlist);
     return playlist;
   }
 
@@ -78,13 +75,11 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     if (!playlistToExport.tracks?.every((song) => song.YoutubeId)) {
       console.error('Not all songs have a YoutubeId');
       return playlistToExport;
-    }
-    else {
+    } else {
       const isNewYoutubePlaylist: boolean = !playlistToExport.YoutubeId;
+      let songsToExport: Song[] = playlistToExport.tracks;
       // Gard clause: Playlist does not have a YoutubeId yet -> first create playlist on YouTube, then add songs
       if (!playlistToExport.YoutubeId) {
-        console.log('Playlist created on YoutubeId');
-        //TODO: Create playlist on YouTube
         const response: Response = await this.youtubePostRequest(
           '/playlists?part=snippet',
           {
@@ -95,21 +90,37 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
         );
 
         const data: JSON = await response.json();
-        console.log(data);
         playlistToExport.YoutubeId = data.id;
       }
-      //TODO: if not new playlist, check what songs are already in the playlist
+      // Gard clause: Playlist already exists on YouTube -> get all songs in playlist and remove them from songs to export
       if (!isNewYoutubePlaylist) {
         const response: Response = await this.youtubeGetRequest(
           `/playlistItems?part=snippet&playlistId=${playlistToExport.YoutubeId}`,
         );
         const data: JSON = await response.json();
-        console.log(data);
+        const songsInPlaylist: Array<string> = await data.items.map((item) => item.snippet.resourceId.videoId);
+        // Remove songs that are already in the playlist form songs to export
+        songsToExport = songsToExport.filter((song) => !songsInPlaylist.includes(song.YoutubeId));
       }
-
-      //TODO: Try and add as many songs as possible to YouTube playlist
-
-      console.log('Exporting playlist to Youtube: ' + await playlistToExport.json());
+      // Add songs to playlist
+      for (const song of songsToExport) {
+        try {
+          const response: Response = await this.youtubePostRequest(
+            '/playlistItems?part=snippet',
+            {
+              snippet: {
+                playlistId: playlistToExport.YoutubeId,
+                resourceId: {
+                  kind: 'youtube#video',
+                  videoId: song.YoutubeId,
+                },
+              },
+            },
+          );
+        } catch (e) {
+          console.error('Failed to add song to Youtube playlist: ' + song.YoutubeId + ', Error: ' + e);
+        }
+      }
       return playlistToExport;
     }
   }
