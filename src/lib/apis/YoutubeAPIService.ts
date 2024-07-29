@@ -105,7 +105,7 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
       // Add songs to playlist
       for (const song of songsToExport) {
         try {
-          const response: Response = await this.youtubePostRequest(
+          await this.youtubePostRequest(
             '/playlistItems?part=snippet',
             {
               snippet: {
