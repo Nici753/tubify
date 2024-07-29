@@ -36,10 +36,12 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
       `/search/${search_url}`,
     );
     const data: JSON = await response.json();
+    console.log(data);
     if (data.items.length > 0) {
       song.YoutubeId = data.items[0].id.videoId;
       song.YoutubeUrl = `https://www.youtube.com/watch?v=${song.YoutubeId}`;
     }
+    console.log(song);
     return song;
   }
 
@@ -51,18 +53,28 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
         song.YoutubeUrl = youtubeSong.YoutubeUrl;
       }
     });
-
+    console.log(playlist);
     return playlist;
   }
 
-  async exportPlaylist(playlist: Playlist): Promise<Playlist> {
+  async exportPlaylist(playlistToExport: Playlist): Promise<Playlist> {
     // Gard clause: All tracks in playlist must have a YoutubeId
-    if (!playlist.tracks?.every((song) => song.YoutubeId)) {
-      console.log('Not all songs have a YoutubeId');
-      return playlist;
-    } else {
-      console.log('Exporting playlist to Youtube: ' + playlist);
-      return playlist;
+    if (!playlistToExport.tracks?.every((song) => song.YoutubeId)) {
+      console.error('Not all songs have a YoutubeId');
+      return playlistToExport;
+    } else if (!playlistToExport.YoutubeId) {
+      console.warn('Playlist does not have a YoutubeId');
+      //TODO: Create playlist on YouTube
+
+      //TODO: Try and add as many songs as possible to YouTube playlist
+      return playlistToExport;
+    }
+    else {
+      console.log('Exporting playlist to Youtube: ' + await playlistToExport.json());
+
+      //TODO: Try and add as many songs as possible to YouTube playlist
+
+      return playlistToExport;
     }
   }
 }
