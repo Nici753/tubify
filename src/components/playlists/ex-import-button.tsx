@@ -32,7 +32,9 @@ export function ExImportButton() {
   const youtubeApi = new YoutubeAPIService();
   const dispatch = useDispatch();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
+  const [exportModal, setExportModal] = useState(false);
+
   const playlists = useSelector((state: PlaylistState) => {
     return state.playlists.playlists;
   });
@@ -47,7 +49,11 @@ export function ExImportButton() {
     });
   };
 
-  const exportPlaylist = () => {};
+  async function exportPlaylist(playlistToExport: Playlist): void {
+    setExportModal(false);
+    const exportedPlaylist = await youtubeApi.exportPlaylist(playlistToExport);
+    updatePlaylistLocally(exportedPlaylist);
+  }
 
   function deletePlaylistLocally() {
     store.dispatch(deleteAllPlaylists());
@@ -55,7 +61,7 @@ export function ExImportButton() {
     dispatch(selectPlaylist(null));
   }
 
-  function updatePlaylistLocally(updatedPlaylist: Playlist) {
+  function updatePlaylistLocally(updatedPlaylist: Playlist): void {
     const allPlaylists = playlists.filter(
       (playlist: Playlist) => playlist.SpotifyId !== updatedPlaylist.SpotifyId,
     );
@@ -63,13 +69,13 @@ export function ExImportButton() {
 
     deletePlaylistLocally();
 
-    allPlaylists.forEach((playlist: Playlist) => {
+    allPlaylists.forEach((playlist: Playlist): void => {
       dispatch(addPlaylist(playlist));
     });
   }
 
   async function updatePlaylist(playlistToUpdate: Playlist) {
-    setIsModalOpen(false);
+    setUpdateModal(false);
     const updatedPlaylist = await youtubeApi.updatePlaylist(playlistToUpdate);
     updatePlaylistLocally(updatedPlaylist);
   }
@@ -87,11 +93,11 @@ export function ExImportButton() {
             <Download className="mr-3" />
             Import
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setIsModalOpen(true)}>
+          <DropdownMenuItem onClick={() => setUpdateModal(true)}>
             <RefreshCw className="mr-3" />
             Update
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => exportPlaylist()}>
+          <DropdownMenuItem onClick={() => setExportModal(true)}>
             <Upload className="mr-3" />
             Export
           </DropdownMenuItem>
@@ -101,7 +107,7 @@ export function ExImportButton() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      {isModalOpen &&
+      {updateModal &&
         createPortal(
           <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4'}>
             <CardHeader>
@@ -129,7 +135,42 @@ export function ExImportButton() {
               ))}
             </CardContent>
             <CardFooter className="flex flex-row-reverse">
-              <Button variant="outline" onClick={() => setIsModalOpen(false)}>
+              <Button variant="outline" onClick={() => setUpdateModal(false)}>
+                Cancel
+              </Button>
+            </CardFooter>
+          </Card>,
+          document.body,
+        )}
+      {exportModal &&
+        createPortal(
+          <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4'}>
+            <CardHeader>
+              <CardTitle>Export Playlists</CardTitle>
+              <CardDescription>
+                Choose a playlist to export to YouTube
+              </CardDescription>
+            </CardHeader>
+            <CardContent className={'flex flex-col gap-2 h-fit'}>
+              {playlists.map((playlist: Playlist) => (
+                <div
+                  key={playlist.SpotifyId}
+                  className={'flex items-center space-x-2 p-1 cursor-pointer'}
+                  onClick={() => exportPlaylist(playlist)}
+                >
+                  <img
+                    src={playlist.imageUrl}
+                    alt={playlist.name}
+                    className={'w-12 h-12 rounded'}
+                  />
+                  <span className={'flex-grow text-left truncate'}>
+                    {playlist.name}
+                  </span>
+                </div>
+              ))}
+            </CardContent>
+            <CardFooter className="flex flex-row-reverse">
+              <Button variant="outline" onClick={() => setExportModal(false)}>
                 Cancel
               </Button>
             </CardFooter>

@@ -13,6 +13,7 @@ Will transcribe your playlists from Spotify to YouTube.
 - [ ] get your playlists from YouTube
 - [ ] create a YouTube playlist
 - [ ] add songs to a YouTube playlist
+- [ ] fix redux error (doesn't cause any issues yet so it can wait)
 
 ### ui improvements
 

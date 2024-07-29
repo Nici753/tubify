@@ -33,7 +33,7 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     const search_url: string = `?part=snippet&maxResults=1&q=${query}`;
 
     const response: Response = await this.youtubeGetRequest(
-      `/search/${search_url}`
+      `/search/${search_url}`,
     );
     const data: JSON = await response.json();
     if (data.items.length > 0) {
@@ -53,5 +53,16 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     });
 
     return playlist;
+  }
+
+  async exportPlaylist(playlist: Playlist): Promise<Playlist> {
+    // Gard clause: All tracks in playlist must have a YoutubeId
+    if (!playlist.tracks?.every((song) => song.YoutubeId)) {
+      console.log('Not all songs have a YoutubeId');
+      return playlist;
+    } else {
+      console.log('Exporting playlist to Youtube: ' + playlist);
+      return playlist;
+    }
   }
 }
