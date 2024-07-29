@@ -1,12 +1,14 @@
 import { Playlist } from '../types/Playlist.ts';
 import { Song } from '../types/Song.ts';
 
-export interface YoutubeAPIInterface {}
+export interface YoutubeAPIInterface {
+}
 
 export class YoutubeAPIService implements YoutubeAPIInterface {
   private static instance: YoutubeAPIService;
 
-  private constructor() {}
+  private constructor() {
+  }
 
   public static getInstance(): YoutubeAPIService {
     if (!YoutubeAPIService.instance) {
@@ -23,6 +25,20 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('youtube_access_token')}`,
         },
+      },
+    );
+    return await fetch(request);
+  }
+
+  async youtubePostRequest(endpoint: string, body: JSON): Promise<Response> {
+    const request: Request = new Request(
+      `https://www.googleapis.com/youtube/v3${endpoint}`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('youtube_access_token')}`,
+        },
+        body: JSON.stringify(body),
       },
     );
     return await fetch(request);
@@ -62,18 +78,38 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     if (!playlistToExport.tracks?.every((song) => song.YoutubeId)) {
       console.error('Not all songs have a YoutubeId');
       return playlistToExport;
-    } else if (!playlistToExport.YoutubeId) {
-      console.warn('Playlist does not have a YoutubeId');
-      //TODO: Create playlist on YouTube
-
-      //TODO: Try and add as many songs as possible to YouTube playlist
-      return playlistToExport;
     }
     else {
-      console.log('Exporting playlist to Youtube: ' + await playlistToExport.json());
+      const isNewYoutubePlaylist: boolean = !playlistToExport.YoutubeId;
+      // Gard clause: Playlist does not have a YoutubeId yet -> first create playlist on YouTube, then add songs
+      if (!playlistToExport.YoutubeId) {
+        console.log('Playlist created on YoutubeId');
+        //TODO: Create playlist on YouTube
+        const response: Response = await this.youtubePostRequest(
+          '/playlists?part=snippet',
+          {
+            snippet: {
+              title: playlistToExport.name,
+            },
+          },
+        );
+
+        const data: JSON = await response.json();
+        console.log(data);
+        playlistToExport.YoutubeId = data.id;
+      }
+      //TODO: if not new playlist, check what songs are already in the playlist
+      if (!isNewYoutubePlaylist) {
+        const response: Response = await this.youtubeGetRequest(
+          `/playlistItems?part=snippet&playlistId=${playlistToExport.YoutubeId}`,
+        );
+        const data: JSON = await response.json();
+        console.log(data);
+      }
 
       //TODO: Try and add as many songs as possible to YouTube playlist
 
+      console.log('Exporting playlist to Youtube: ' + await playlistToExport.json());
       return playlistToExport;
     }
   }
