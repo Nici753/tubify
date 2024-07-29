@@ -10,9 +10,10 @@ Will transcribe your playlists from Spotify to YouTube.
 - [x] make helper function for deleting and updating playlists
 - [x] make a update playlist button
 - [x] search songs on YouTube and add them to the playlist
-- [ ] get your playlists from YouTube
-- [ ] create a YouTube playlist
-- [ ] add songs to a YouTube playlist
+- [x] get your playlists from YouTube
+- [x] create a YouTube playlist
+- [x] add songs to a YouTube playlist
+- [ ] handle quota exceeded on update playlist
 - [ ] fix redux error (doesn't cause any issues yet so it can wait)
 
 ### ui improvements
