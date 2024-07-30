@@ -6,7 +6,7 @@ export function PageMainContent() {
   return (
     <div className={'flex-grow'}>
       <ResizablePanelGroup direction={'horizontal'}>
-        <ResizablePanel defaultSize={25}>
+        <ResizablePanel defaultSize={15}>
           <Sidebar />
         </ResizablePanel>
         <ResizableHandle />
