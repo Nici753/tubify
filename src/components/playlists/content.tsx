@@ -36,7 +36,7 @@ export function Content() {
   return (
     <div
       className={
-        'col-span-4 lg:col-span-3 flex flex-col px-3 pt-3 pb-32 h-fulls'
+        'flex flex-col px-3 pt-3 pb-32 h-fulls'
       }
       id="parent-width"
     >

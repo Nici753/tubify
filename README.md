@@ -18,9 +18,8 @@ Will transcribe your playlists from Spotify to YouTube.
 
 ### ui improvements
 
-- [ ] make sidebar and component resizable https://ui.shadcn.com/docs/components/resizable
+- [x] make sidebar and component resizable https://ui.shadcn.com/docs/components/resizable
 - [ ] make sidebar and component scrollable https://ui.shadcn.com/docs/components/scroll-area
-- [ ] round the corners of the sidebar and content for more modern and uniform look
 - [ ] add toast notifications about import status
 - [ ] add loading spinner
 

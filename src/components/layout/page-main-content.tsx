@@ -1,11 +1,19 @@
 import { Sidebar } from '../playlists/sidebar.tsx';
 import { Content } from '../playlists/content.tsx';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../ui/resizable.tsx';
 
 export function PageMainContent() {
   return (
-    <div className={'grid grid-cols-5 flex-grow'}>
-      <Sidebar />
-      <Content />
+    <div className={'flex-grow'}>
+      <ResizablePanelGroup direction={'horizontal'}>
+        <ResizablePanel defaultSize={25}>
+          <Sidebar />
+        </ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel>
+          <Content />
+        </ResizablePanel>
+      </ResizablePanelGroup>
     </div>
   );
 }
