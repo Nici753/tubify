@@ -48,23 +48,29 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     const query: string = `${song.name} ${song.artists.join(', ')}`;
     const search_url: string = `?part=snippet&maxResults=1&q=${query}`;
 
-    const response: Response = await this.youtubeGetRequest(
-      `/search/${search_url}`,
-    );
-    const data: JSON = await response.json();
-    if (data.items.length > 0) {
-      song.YoutubeId = data.items[0].id.videoId;
-      song.YoutubeUrl = `https://www.youtube.com/watch?v=${song.YoutubeId}`;
+    try {
+      const response: Response = await this.youtubeGetRequest(
+        `/search/${search_url}`,
+      );
+      const data: JSON = await response.json();
+      if (data.items.length > 0) {
+        song.YoutubeId = data.items[0].id.videoId;
+        song.YoutubeUrl = `https://www.youtube.com/watch?v=${song.YoutubeId}`;
+      }
+    } catch (e) {
+      console.error('Failed to search for song on Youtube: ' + song.name + ', Error: ' + e);
     }
     return song;
   }
 
   async updatePlaylist(playlist: Playlist): Promise<Playlist> {
     playlist.tracks?.forEach((song) => {
-      const youtubeSong = this.searchSongOnYoutube(song);
-      if (youtubeSong.YoutubeId) {
-        song.YoutubeId = youtubeSong.YoutubeId;
-        song.YoutubeUrl = youtubeSong.YoutubeUrl;
+      if (!song.YoutubeId) {
+        const youtubeSong = this.searchSongOnYoutube(song);
+        if (youtubeSong.YoutubeId) {
+          song.YoutubeId = youtubeSong.YoutubeId;
+          song.YoutubeUrl = youtubeSong.YoutubeUrl;
+        }
       }
     });
     return playlist;

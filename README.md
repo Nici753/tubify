@@ -13,7 +13,7 @@ Will transcribe your playlists from Spotify to YouTube.
 - [x] get your playlists from YouTube
 - [x] create a YouTube playlist
 - [x] add songs to a YouTube playlist
-- [ ] handle quota exceeded on update playlist
+- [X] handle quota exceeded on update playlist
 - [ ] fix redux error (doesn't cause any issues yet so it can wait)
 
 ### ui improvements
