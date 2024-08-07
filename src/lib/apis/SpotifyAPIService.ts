@@ -16,7 +16,8 @@ export interface SpotifyAPIInterface {
 export class SpotifyAPIService implements SpotifyAPIInterface {
   private static instance: SpotifyAPIService;
 
-  private constructor() {}
+  private constructor() {
+  }
 
   public static getInstance(): SpotifyAPIService {
     if (!SpotifyAPIService.instance) {
@@ -25,11 +26,13 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
     return SpotifyAPIService.instance;
   }
 
-  async fetchFromSpotify(endpoint: string): Promise<Response> {
+  baseURL: string = 'https://api.spotify.com/v1';
+
+  async fetchFromSpotify(requestURL: string): Promise<Response> {
     if (!localStorage.getItem('spotify_access_token')) {
       throw new Error('No access token found');
     } else {
-      const request = new Request(`https://api.spotify.com/v1${endpoint}`, {
+      const request = new Request(`${requestURL}`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('spotify_access_token')}`,
@@ -42,7 +45,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
   async getAllUsersPlaylist(): Promise<Playlist[]> {
     try {
       const user_display_name: string = await this.getUserName();
-      let response: Response = await this.fetchFromSpotify('/me/playlists');
+      let response: Response = await this.fetchFromSpotify(`${this.baseURL}/me/playlists`);
       let data = await response.json();
 
       // Save data.items to an array of type Playlist, filtering out playlists not owned by the user
@@ -91,7 +94,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
 
   async getPlaylistItems(playlistId: string | undefined): Promise<Song[]> {
     let response: Response = await this.fetchFromSpotify(
-      `/playlists/${playlistId}/tracks`,
+      `${this.baseURL}/playlists/${playlistId}/tracks`,
     );
     let data = await response.json();
 
@@ -107,7 +110,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
     while (data.next) {
       response = await this.fetchFromSpotify(data.next);
       data = await response.json();
-      const newSongs: Song[] = data.tracks.items.map((item) => ({
+      const newSongs: Song[] = data.items.map((item) => ({
         SpotifyId: item.track.id,
         name: item.track.name,
         imageUrl: item.track.album.images[0]?.url,
@@ -124,7 +127,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
   }
 
   async getUserName(): Promise<string> {
-    const response = await this.fetchFromSpotify('/me');
+    const response = await this.fetchFromSpotify(`${this.baseURL}/me`);
     const data = await response.json();
     return data.display_name;
   }
