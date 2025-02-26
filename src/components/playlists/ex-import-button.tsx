@@ -76,8 +76,22 @@ export function ExImportButton() {
 
   async function updatePlaylist(playlistToUpdate: Playlist) {
     setUpdateModal(false);
+    console.log(playlistToUpdate);
+    console.log('Tracks:');
+    // safe all tracks without youtubeId to a new array and console log them
+    const tracksWithoutYoutubeId = playlistToUpdate.tracks.filter(
+      (track) => !track.YoutubeId,
+    );
+    console.log(tracksWithoutYoutubeId);
+
     const updatedPlaylist = await youtubeApi.updatePlaylist(playlistToUpdate);
     updatePlaylistLocally(updatedPlaylist);
+    console.log(updatedPlaylist);
+    // safe all the songs that are equal to the tracksWithoutYoutubeId array to a new array and console log them
+    const updatedSongs = updatedPlaylist.tracks.filter((track) =>
+      tracksWithoutYoutubeId.includes(track),
+    );
+    console.log(updatedSongs);
   }
 
   return (
