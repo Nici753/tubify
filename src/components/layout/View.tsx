@@ -6,7 +6,7 @@ export function View() {
   return (
     <div className={'flex flex-col h-screen'}>
       <TopBar />
-      <PageMainContent />
+      {/*<PageMainContent />*/}
       <Toaster />
     </div>
   );

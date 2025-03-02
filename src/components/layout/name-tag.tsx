@@ -1,8 +1,10 @@
+import userStore from '../../lib/store/user-store.ts';
+
 export function NameTag() {
-  const user: string = localStorage.getItem('user_name');
+  const { user_name } = userStore();
   return (
     <div className={'flex flex-row content-center'}>
-      <p className={'text-lg'}>Welcome {user}</p>
+      <p className={'text-lg'}>Welcome {user_name}</p>
     </div>
   );
 }
