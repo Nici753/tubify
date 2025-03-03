@@ -44,7 +44,7 @@ export function TopBar() {
   return (
     <div className="flex flex-row-reverse p-3 border-b-4">
       <ModeToggle />
-      {/*{spotifyLoggedIn && youtubeLoggedIn && <ExImportButton />}*/}
+      {spotifyLoggedIn && youtubeLoggedIn && <ExImportButton />}
       {!spotifyLoggedIn && <SpotifyLoginButton />}
       {!youtubeLoggedIn && <YoutubeLoginButton />}
       {youtubeLoggedIn && <LogoutButton />}

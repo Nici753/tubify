@@ -8,13 +8,6 @@ import { Button } from '../ui/Button.tsx';
 import { Folder, Download, Upload, Trash2, RefreshCw } from 'lucide-react';
 import { SpotifyAPIService } from '../../lib/apis/SpotifyAPIService.ts';
 import { Playlist, PlaylistState } from '../../lib/types/Playlist.ts';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  addPlaylist,
-  deleteAllPlaylists,
-  selectPlaylist,
-} from '../../lib/store/actions';
-import { store } from '../../lib/store/store.ts';
 import { YoutubeAPIService } from '../../lib/apis/YoutubeAPIService.ts';
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -26,41 +19,45 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card.tsx';
+import usePlaylistStore from '../../lib/store/playlist-store.ts';
 
 export function ExImportButton() {
   const spotifyApi = new SpotifyAPIService();
-  const youtubeApi = new YoutubeAPIService();
-  const dispatch = useDispatch();
-
-  const [updateModal, setUpdateModal] = useState(false);
-  const [exportModal, setExportModal] = useState(false);
-
-  const playlists = useSelector((state: PlaylistState) => {
-    return state.playlists.playlists;
-  });
+  // const youtubeApi = new YoutubeAPIService();
+  const {
+    addPlaylist,
+  } = usePlaylistStore();
+  // const [updateModal, setUpdateModal] = useState(false);
+  // const [exportModal, setExportModal] = useState(false);
 
   const importPlaylist = async () => {
-    if (localStorage.getItem('playlists')) {
-      deletePlaylistLocally();
-    }
+    // if (localStorage.getItem('playlists')) {
+    //   deletePlaylistLocally();
+    // }
     const playlists: Playlist[] = await spotifyApi.importPlaylist();
     playlists.forEach((playlist) => {
-      dispatch(addPlaylist(playlist));
+      addPlaylist(playlist);
+      console.log(playlist.name + ' added');
     });
   };
 
+/*
   async function exportPlaylist(playlistToExport: Playlist): void {
     setExportModal(false);
     const exportedPlaylist = await youtubeApi.exportPlaylist(playlistToExport);
     updatePlaylistLocally(exportedPlaylist);
   }
+*/
 
+/*
   function deletePlaylistLocally() {
     store.dispatch(deleteAllPlaylists());
     localStorage.removeItem('playlists');
     dispatch(selectPlaylist(null));
   }
+*/
 
+/*
   function updatePlaylistLocally(updatedPlaylist: Playlist): void {
     const allPlaylists = playlists.filter(
       (playlist: Playlist) => playlist.SpotifyId !== updatedPlaylist.SpotifyId,
@@ -73,7 +70,9 @@ export function ExImportButton() {
       dispatch(addPlaylist(playlist));
     });
   }
+*/
 
+/*
   async function updatePlaylist(playlistToUpdate: Playlist) {
     setUpdateModal(false);
     console.log(playlistToUpdate);
@@ -93,6 +92,7 @@ export function ExImportButton() {
     );
     console.log(updatedSongs);
   }
+*/
 
   return (
     <>
@@ -107,21 +107,21 @@ export function ExImportButton() {
             <Download className="mr-3" />
             Import
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setUpdateModal(true)}>
-            <RefreshCw className="mr-3" />
-            Update
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setExportModal(true)}>
-            <Upload className="mr-3" />
-            Export
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => deletePlaylistLocally()}>
-            <Trash2 className="mr-3" />
-            Delete
-          </DropdownMenuItem>
+       {/* <DropdownMenuItem onClick={() => setUpdateModal(true)}>
+          <RefreshCw className="mr-3" />
+          Update
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setExportModal(true)}>
+          <Upload className="mr-3" />
+          Export
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => deletePlaylistLocally()}>
+          <Trash2 className="mr-3" />
+          Delete
+        </DropdownMenuItem>*/}
         </DropdownMenuContent>
       </DropdownMenu>
-      {updateModal &&
+      {/*{updateModal &&
         createPortal(
           <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4'}>
             <CardHeader>
@@ -190,7 +190,7 @@ export function ExImportButton() {
             </CardFooter>
           </Card>,
           document.body,
-        )}
+        )}*/}
     </>
   );
 }
