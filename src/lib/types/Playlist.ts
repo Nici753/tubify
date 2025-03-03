@@ -4,8 +4,8 @@ export type Playlist = {
   SpotifyId: string;
   YoutubeId?: string;
   name: string;
-  imageUrl?: string;
-  SpotifyUrl?: string;
+  imageUrl: string;
+  SpotifyUrl: string;
   YoutubeUrl?: string;
   tracks?: Array<Song>;
 };
@@ -25,9 +25,4 @@ export type PlaylistResponse = {
 export type PlaylistState = {
   playlists: Playlist[];
   selectedPlaylist: Playlist | null;
-};
-
-export const initialState: PlaylistState = {
-  playlists: [],
-  selectedPlaylist: null,
 };
