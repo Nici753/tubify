@@ -1,5 +1,6 @@
 import { Playlist } from '../types/Playlist.ts';
 import { Song } from '../types/Song.ts';
+import useUserStore from '../store/user-store.ts';
 
 export interface SpotifyAPIInterface {
   fetchFromSpotify(endpoint: string): Promise<Response>;
@@ -26,16 +27,17 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
     return SpotifyAPIService.instance;
   }
 
+  spotifyToken = useUserStore(state => state.spotify_access_token);
   baseURL: string = 'https://api.spotify.com/v1';
 
   async fetchFromSpotify(requestURL: string): Promise<Response> {
-    if (!localStorage.getItem('spotify_access_token')) {
+    if (this.spotifyToken == null) {
       throw new Error('No access token found');
     } else {
       const request = new Request(`${requestURL}`, {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('spotify_access_token')}`,
+          Authorization: `Bearer ${this.spotifyToken}`,
         },
       });
       return await fetch(request);
