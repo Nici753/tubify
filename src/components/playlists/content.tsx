@@ -10,6 +10,7 @@ export function Content() {
   const [parentWidth, setParentWidth] = useState<number>(0);
   const parentRefWidth = useRef<HTMLDivElement>(null);
 
+
   useEffect(() => {
     const updateParentWidth = () => {
       if (!parentRefWidth.current) {
@@ -23,7 +24,7 @@ export function Content() {
     return () => {
       window.removeEventListener('resize', updateParentWidth);
     };
-  }, []);
+  }, [parentWidth]);
 
   if (!selectedPlaylist) {
     return null;
@@ -34,7 +35,7 @@ export function Content() {
       className={
         'flex flex-col px-3 pt-3 pb-32 h-fulls'
       }
-      id="parent-width"
+      ref={parentRefWidth}
     >
       <h1 className={'text-3xl font-bold'}>{selectedPlaylist.name}</h1>
       <div className={'grid grid-cols-1 gap-2'}>
