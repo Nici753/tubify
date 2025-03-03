@@ -9,7 +9,7 @@ interface PlaylistState {
   addPlaylist: (playlist: Playlist) => void;
   updatePlaylist: (updatedPlaylist: Playlist) => void;
   removePlaylist: (playlistId: string) => void;
-  selectPlaylist: (playlistId: string | undefined) => void;
+  selectPlaylist: (playlistId: string) => void;
   clearPlaylists: () => void;
 }
 

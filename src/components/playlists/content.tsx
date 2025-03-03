@@ -1,22 +1,21 @@
 import { CirclePlay } from 'lucide-react';
 import SpotifyMusicPlayer from './SpotifyMusicPlayer.tsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import usePlaylistStore from '../../lib/store/playlist-store.ts';
 
 export function Content() {
   const selectedPlaylist =  usePlaylistStore(state=> state.selectedPlaylist);
 
   const [currentSong, setCurrentSong] = useState<string | null>(null);
-  const [parentWidth, setParentWidth] = useState<number>(null);
+  const [parentWidth, setParentWidth] = useState<number>(0);
+  const parentRefWidth = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const updateParentWidth = () => {
-      if (!document.getElementById('parent-width')) {
+      if (!parentRefWidth.current) {
         return null;
       } else {
-        setParentWidth(
-          document.getElementById('parent-width').clientWidth - 124,
-        );
+        setParentWidth(parentRefWidth.current.clientWidth - 124);
       }
     };
     updateParentWidth();

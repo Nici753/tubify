@@ -1,5 +1,5 @@
-import { Playlist } from '../types/Playlist.ts';
-import { Song } from '../types/Song.ts';
+import { Playlist, PlaylistResponse } from '../types/Playlist.ts';
+import { Song, TrackResponse } from '../types/Song.ts';
 import useUserStore from '../store/user-store.ts';
 
 export interface SpotifyAPIInterface {
@@ -44,36 +44,37 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
     }
   }
 
-  async getAllUsersPlaylist(): Promise<Playlist[]> {
+  async getAllUsersPlaylist() {
     try {
       const user_display_name: string = await this.getUserName();
-      let response: Response = await this.fetchFromSpotify(`${this.baseURL}/me/playlists`);
-      let data = await response.json();
-
-      // Save data.items to an array of type Playlist, filtering out playlists not owned by the user
-      let playlists: Playlist[] = data.items
-        .filter((item) => item.owner.display_name === user_display_name) // Replace 'your_user_id' with the actual user ID
-        .map((item) => ({
-          SpotifyId: item.id,
-          name: item.name,
-          imageUrl: item.images[0]?.url,
-          SpotifyUrl: item.external_urls.spotify,
-        }));
-
+      let data: {
+        next: string,
+        items: PlaylistResponse[]
+      } = {
+        next: `${this.baseURL}/me/playlists`,
+        items: [],
+      };
+      // Handle Spotify pagination issues (last playlist is first on the next page)
+      const spotifyPlaylistIds: string[] = [];
       // handling spotify pagination
-      while (data.next) {
-        response = await this.fetchFromSpotify(data.next);
+      let playlists: Playlist[] = [];
+      do {
+        const response = await this.fetchFromSpotify(data.next);
         data = await response.json();
-        const newPlaylists: Playlist[] = data.items
-          .filter((item) => item.owner.display_name === user_display_name) // Replace 'your_user_id' with the actual user ID
+        const playlist: Playlist[] = data.items
+          .filter((item) => {
+            const checkItem = item.owner.display_name === user_display_name && !spotifyPlaylistIds.includes(item.id);
+            spotifyPlaylistIds.push(item.id);
+            return checkItem;
+          })
           .map((item) => ({
             SpotifyId: item.id,
             name: item.name,
             imageUrl: item.images[0]?.url,
             SpotifyUrl: item.external_urls.spotify,
           }));
-        playlists = [...playlists, ...newPlaylists];
-      }
+        playlists = [...playlists, ...playlist];
+      } while (data.next);
 
       console.log('Loading ' + playlists.length + ' playlists');
       let currentPlaylist = 0;
@@ -91,26 +92,21 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
       return playlists;
     } catch (error) {
       console.error('Error fetching user playlists:', error);
+      return [] as Playlist[];
     }
   }
 
-  async getPlaylistItems(playlistId: string | undefined): Promise<Song[]> {
-    let response: Response = await this.fetchFromSpotify(
-      `${this.baseURL}/playlists/${playlistId}/tracks`,
-    );
-    let data = await response.json();
+  async getPlaylistItems(playlistId: string): Promise<Song[]> {
 
-    let songs: Song[] = data.items.map((item) => ({
-      SpotifyId: item.track.id,
-      name: item.track.name,
-      imageUrl: item.track.album.images[0]?.url,
-      SpotifyUrl: item.track.external_urls.spotify,
-      artists: item.track.artists.map((artist) => artist.name),
-    }));
+    let data: {
+      next: string;
+      items: TrackResponse[]
+    } = { next: `${this.baseURL}/playlists/${playlistId}/tracks`, items: [] };
 
+    let songs: Song[] = [];
     // handling spotify pagination
-    while (data.next) {
-      response = await this.fetchFromSpotify(data.next);
+    do {
+      const response = await this.fetchFromSpotify(data.next);
       data = await response.json();
       const newSongs: Song[] = data.items.map((item) => ({
         SpotifyId: item.track.id,
@@ -120,7 +116,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
         artists: item.track.artists.map((artist) => artist.name),
       }));
       songs = [...songs, ...newSongs];
-    }
+    } while (data.next);
     return songs;
   }
 
