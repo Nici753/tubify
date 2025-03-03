@@ -1,13 +1,10 @@
-import { useSelector } from 'react-redux';
-import { PlaylistState } from '../../lib/types/Playlist.ts';
 import { CirclePlay } from 'lucide-react';
 import SpotifyMusicPlayer from './SpotifyMusicPlayer.tsx';
 import { useEffect, useState } from 'react';
+import usePlaylistStore from '../../lib/store/playlist-store.ts';
 
 export function Content() {
-  const selectedPlaylist = useSelector(
-    (state: PlaylistState) => state.playlists.selectedPlaylist,
-  );
+  const selectedPlaylist =  usePlaylistStore(state=> state.selectedPlaylist);
 
   const [currentSong, setCurrentSong] = useState<string | null>(null);
   const [parentWidth, setParentWidth] = useState<number>(null);
