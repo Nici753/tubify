@@ -7,9 +7,9 @@ export interface SpotifyAPIInterface {
 
   getUserName(): Promise<string>;
 
-  importPlaylist(): void;
+  importPlaylist(importedPlaylists:Playlist[]): void;
 
-  getAllUsersPlaylist(): Promise<Playlist[]>;
+  getAllUsersPlaylist(importedPlaylists:Playlist[]): Promise<Playlist[]>;
 
   getPlaylistItems(playlistId: string | undefined): Promise<Song[]>;
 }
@@ -44,7 +44,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
     }
   }
 
-  async getAllUsersPlaylist() {
+  async getAllUsersPlaylist(importedPlaylists: Playlist[]) {
     try {
       const user_display_name: string = await this.getUserName();
       let data: {
@@ -56,6 +56,9 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
       };
       // Handle Spotify pagination issues (last playlist is first on the next page)
       const spotifyPlaylistIds: string[] = [];
+      for (const playlist of importedPlaylists) {
+        spotifyPlaylistIds.push(playlist.SpotifyId);
+      }
       // handling spotify pagination
       let playlists: Playlist[] = [];
       do {
@@ -63,6 +66,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
         data = await response.json();
         const playlist: Playlist[] = data.items
           .filter((item) => {
+            // Handle Spotify pagination issues (last playlist is first on the next page)
             const checkItem = item.owner.display_name === user_display_name && !spotifyPlaylistIds.includes(item.id);
             spotifyPlaylistIds.push(item.id);
             return checkItem;
@@ -76,18 +80,10 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
         playlists = [...playlists, ...playlist];
       } while (data.next);
 
-      console.log('Loading ' + playlists.length + ' playlists');
-      let currentPlaylist = 0;
-
       for (const playlist of playlists) {
-        console.log('Loading playlist ' + playlist.name + '...');
         await this.delay(1000);
         playlist.tracks = await this.getPlaylistItems(playlist.SpotifyId);
-        currentPlaylist++;
-        console.log('Loaded ' + currentPlaylist + ' Playlists');
       }
-
-      console.log('Finished loading playlists');
 
       return playlists;
     } catch (error) {
@@ -130,7 +126,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
     return data.display_name;
   }
 
-  async importPlaylist() {
-    return await this.getAllUsersPlaylist();
+  async importPlaylist(importedPlaylists:Playlist[]) {
+    return await this.getAllUsersPlaylist(importedPlaylists);
   }
 }

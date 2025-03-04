@@ -20,24 +20,22 @@ import {
   CardTitle,
 } from '../ui/card.tsx';
 import usePlaylistStore from '../../lib/store/playlist-store.ts';
+import playlistStore from '../../lib/store/playlist-store.ts';
 
 export function ExImportButton() {
   const spotifyApi = new SpotifyAPIService();
-  // const youtubeApi = new YoutubeAPIService();
+  const youtubeApi = new YoutubeAPIService();
   const {
     addPlaylist,
+    updatePlaylist,
   } = usePlaylistStore();
-  // const [updateModal, setUpdateModal] = useState(false);
+   const [updateModal, setUpdateModal] = useState(false);
   // const [exportModal, setExportModal] = useState(false);
 
-  const importPlaylist = async () => {
-    // if (localStorage.getItem('playlists')) {
-    //   deletePlaylistLocally();
-    // }
-    const playlists: Playlist[] = await spotifyApi.importPlaylist();
+  const importPlaylist = async (importedPlaylists:Playlist[]) => {
+    const playlists: Playlist[] = await spotifyApi.importPlaylist(importedPlaylists);
     playlists.forEach((playlist) => {
       addPlaylist(playlist);
-      console.log(playlist.name + ' added');
     });
   };
 
@@ -57,23 +55,7 @@ export function ExImportButton() {
   }
 */
 
-/*
-  function updatePlaylistLocally(updatedPlaylist: Playlist): void {
-    const allPlaylists = playlists.filter(
-      (playlist: Playlist) => playlist.SpotifyId !== updatedPlaylist.SpotifyId,
-    );
-    allPlaylists.push(updatedPlaylist);
-
-    deletePlaylistLocally();
-
-    allPlaylists.forEach((playlist: Playlist): void => {
-      dispatch(addPlaylist(playlist));
-    });
-  }
-*/
-
-/*
-  async function updatePlaylist(playlistToUpdate: Playlist) {
+  async function updatePlaylistWithYoutubeSongs(playlistToUpdate: Playlist) {
     setUpdateModal(false);
     console.log(playlistToUpdate);
     console.log('Tracks:');
@@ -84,7 +66,7 @@ export function ExImportButton() {
     console.log(tracksWithoutYoutubeId);
 
     const updatedPlaylist = await youtubeApi.updatePlaylist(playlistToUpdate);
-    updatePlaylistLocally(updatedPlaylist);
+    updatePlaylist(updatedPlaylist);
     console.log(updatedPlaylist);
     // safe all the songs that are equal to the tracksWithoutYoutubeId array to a new array and console log them
     const updatedSongs = updatedPlaylist.tracks.filter((track) =>
@@ -92,8 +74,8 @@ export function ExImportButton() {
     );
     console.log(updatedSongs);
   }
-*/
 
+  const playlists = playlistStore((state: PlaylistState) => state.playlists);
   return (
     <>
       <DropdownMenu>
@@ -103,25 +85,25 @@ export function ExImportButton() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => importPlaylist()}>
+          <DropdownMenuItem onClick={() => importPlaylist(playlists)}>
             <Download className="mr-3" />
             Import
           </DropdownMenuItem>
-       {/* <DropdownMenuItem onClick={() => setUpdateModal(true)}>
+       { <DropdownMenuItem onClick={() => setUpdateModal(true)}>
           <RefreshCw className="mr-3" />
           Update
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setExportModal(true)}>
-          <Upload className="mr-3" />
-          Export
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => deletePlaylistLocally()}>
-          <Trash2 className="mr-3" />
-          Delete
-        </DropdownMenuItem>*/}
+         /*<DropdownMenuItem onClick={() => setExportModal(true)}>
+           <Upload className="mr-3" />
+           Export
+         </DropdownMenuItem>
+         <DropdownMenuItem onClick={() => deletePlaylistLocally()}>
+           <Trash2 className="mr-3" />
+           Delete
+         </DropdownMenuItem>*/}
         </DropdownMenuContent>
       </DropdownMenu>
-      {/*{updateModal &&
+      {updateModal &&
         createPortal(
           <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4'}>
             <CardHeader>
@@ -135,7 +117,7 @@ export function ExImportButton() {
                 <div
                   key={playlist.SpotifyId}
                   className={'flex items-center space-x-2 p-1 cursor-pointer'}
-                  onClick={() => updatePlaylist(playlist)}
+                  onClick={() => updatePlaylistWithYoutubeSongs(playlist)}
                 >
                   <img
                     src={playlist.imageUrl}
@@ -156,6 +138,7 @@ export function ExImportButton() {
           </Card>,
           document.body,
         )}
+      {/*
       {exportModal &&
         createPortal(
           <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4'}>
@@ -190,7 +173,8 @@ export function ExImportButton() {
             </CardFooter>
           </Card>,
           document.body,
-        )}*/}
+        )}
+  */}
     </>
   );
 }
