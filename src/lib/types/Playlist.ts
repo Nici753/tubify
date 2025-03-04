@@ -1,4 +1,4 @@
-import { Song } from './Song';
+import { Track } from './Track.ts';
 
 export type Playlist = {
   SpotifyId: string;
@@ -7,10 +7,10 @@ export type Playlist = {
   imageUrl: string;
   SpotifyUrl: string;
   YoutubeUrl?: string;
-  tracks?: Array<Song>;
+  tracks?: Array<Track>;
 };
 
-export type PlaylistResponse = {
+export type SpotifyPlaylistResponse = {
   id: string;
   name: string;
   images: {

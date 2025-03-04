@@ -62,6 +62,7 @@ export function ExImportButton() {
   }
 
   const playlists = playlistStore((state: PlaylistState) => state.playlists);
+  console.log(playlists);
   return (
     <>
       <DropdownMenu>

@@ -1,5 +1,5 @@
-import { Playlist, PlaylistResponse } from '../types/Playlist.ts';
-import { Song, TrackResponse } from '../types/Song.ts';
+import { Playlist, SpotifyPlaylistResponse } from '../types/Playlist.ts';
+import { Track, SpotifyTrackResponse } from '../types/Track.ts';
 import useUserStore from '../store/user-store.ts';
 
 export interface SpotifyAPIInterface {
@@ -11,7 +11,7 @@ export interface SpotifyAPIInterface {
 
   getAllUsersPlaylist(importedPlaylists:Playlist[]): Promise<Playlist[]>;
 
-  getPlaylistItems(playlistId: string | undefined): Promise<Song[]>;
+  getPlaylistItems(playlistId: string | undefined): Promise<Track[]>;
 }
 
 export class SpotifyAPIService implements SpotifyAPIInterface {
@@ -49,7 +49,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
       const user_display_name: string = await this.getUserName();
       let data: {
         next: string,
-        items: PlaylistResponse[]
+        items: SpotifyPlaylistResponse[]
       } = {
         next: `${this.baseURL}/me/playlists`,
         items: [],
@@ -92,19 +92,19 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
     }
   }
 
-  async getPlaylistItems(playlistId: string): Promise<Song[]> {
+  async getPlaylistItems(playlistId: string): Promise<Track[]> {
 
     let data: {
       next: string;
-      items: TrackResponse[]
+      items: SpotifyTrackResponse[]
     } = { next: `${this.baseURL}/playlists/${playlistId}/tracks`, items: [] };
 
-    let songs: Song[] = [];
+    let songs: Track[] = [];
     // handling spotify pagination
     do {
       const response = await this.fetchFromSpotify(data.next);
       data = await response.json();
-      const newSongs: Song[] = data.items.map((item) => ({
+      const newSongs: Track[] = data.items.map((item) => ({
         SpotifyId: item.track.id,
         name: item.track.name,
         imageUrl: item.track.album.images[0]?.url,

@@ -1,5 +1,5 @@
-import { Playlist } from '../types/Playlist.ts';
-import { Song } from '../types/Song.ts';
+import { Playlist, YoutubePlaylistResponse } from '../types/Playlist.ts';
+import { Track, YouTubeTrackResponse } from '../types/Track.ts';
 import useUserStore from '../store/user-store.ts';
 
 export interface YoutubeAPIInterface {
@@ -47,32 +47,32 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     return await fetch(request);
   }
 
-  async searchSongOnYoutube(song: Song): Promise<Song> {
-    const query: string = `${song.name} ${song.artists.join(', ')}`;
+  async searchSongOnYoutube(track: Track): Promise<Track> {
+    const query: string = `${track.name} ${track.artists.join(', ')}`;
     const search_url: string = `?part=snippet&maxResults=1&q=${query}`;
 
     try {
       const response: Response = await this.youtubeGetRequest(
         `/search/${search_url}`,
       );
-      const data: JSON = await response.json();
+      const data: YouTubeTrackResponse = await response.json();
       if (data.items.length > 0) {
-        song.YoutubeId = data.items[0].id.videoId;
-        song.YoutubeUrl = `https://www.youtube.com/watch?v=${song.YoutubeId}`;
+        track.YoutubeId = data.items[0].id.videoId;
+        track.YoutubeUrl = `https://www.youtube.com/watch?v=${track.YoutubeId}`;
       }
     } catch (e) {
-      console.error('Failed to search for song on Youtube: ' + song.name + ', Error: ' + e);
+      console.error('Failed to search for track on Youtube: ' + track.name + ', Error: ' + e);
     }
-    return song;
+    return track;
   }
 
   async updatePlaylist(playlist: Playlist): Promise<Playlist> {
-    playlist.tracks?.forEach((song) => {
-      if (!song.YoutubeId) {
-        const youtubeSong = this.searchSongOnYoutube(song);
+    playlist.tracks?.forEach((track) => {
+      if (!track.YoutubeId) {
+        const youtubeSong = this.searchSongOnYoutube(track);
         if (youtubeSong.YoutubeId) {
-          song.YoutubeId = youtubeSong.YoutubeId;
-          song.YoutubeUrl = youtubeSong.YoutubeUrl;
+          track.YoutubeId = youtubeSong.YoutubeId;
+          track.YoutubeUrl = youtubeSong.YoutubeUrl;
         }
       }
     });
@@ -86,7 +86,7 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
       return playlistToExport;
     } else {
       const isNewYoutubePlaylist: boolean = !playlistToExport.YoutubeId;
-      let songsToExport: Song[] = playlistToExport.tracks;
+      let songsToExport: Track[] = playlistToExport.tracks;
       // Gard clause: Playlist does not have a YoutubeId yet -> first create playlist on YouTube, then add songs
       if (!playlistToExport.YoutubeId) {
         const response: Response = await this.youtubePostRequest(

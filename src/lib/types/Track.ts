@@ -1,4 +1,4 @@
-type Song = {
+type Track = {
   SpotifyId: string;
   YoutubeId?: string;
   name: string;
@@ -8,7 +8,7 @@ type Song = {
   artists: Array<string>;
 };
 
-export type TrackResponse = {
+export type SpotifyTrackResponse = {
   track: {
     id: string;
     name: string;
@@ -26,4 +26,12 @@ export type TrackResponse = {
   }
 }
 
-export type { Song };
+export type YouTubeTrackResponse = {
+  items: {
+    id: {
+      videoId: string;
+    };
+  }[];
+};
+
+export type { Track };
