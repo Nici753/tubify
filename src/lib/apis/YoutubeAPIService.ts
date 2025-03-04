@@ -1,5 +1,6 @@
 import { Playlist } from '../types/Playlist.ts';
 import { Song } from '../types/Song.ts';
+import useUserStore from '../store/user-store.ts';
 
 export interface YoutubeAPIInterface {
 }
@@ -17,13 +18,15 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     return YoutubeAPIService.instance;
   }
 
+  youtubeToken = useUserStore(state => state.youtube_access_token);
+
   async youtubeGetRequest(endpoint: string): Promise<Response> {
     const request: Request = new Request(
       `https://www.googleapis.com/youtube/v3${endpoint}`,
       {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('youtube_access_token')}`,
+          Authorization: `Bearer ${this.youtubeToken}`,
         },
       },
     );
@@ -36,7 +39,7 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('youtube_access_token')}`,
+          Authorization: `Bearer ${this.youtubeToken}`,
         },
         body: JSON.stringify(body),
       },

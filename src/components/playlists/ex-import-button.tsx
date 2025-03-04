@@ -29,50 +29,36 @@ export function ExImportButton() {
     addPlaylist,
     updatePlaylist,
   } = usePlaylistStore();
-   const [updateModal, setUpdateModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
   // const [exportModal, setExportModal] = useState(false);
 
-  const importPlaylist = async (importedPlaylists:Playlist[]) => {
+  const importPlaylist = async (importedPlaylists: Playlist[]) => {
     const playlists: Playlist[] = await spotifyApi.importPlaylist(importedPlaylists);
     playlists.forEach((playlist) => {
       addPlaylist(playlist);
     });
   };
 
-/*
-  async function exportPlaylist(playlistToExport: Playlist): void {
-    setExportModal(false);
-    const exportedPlaylist = await youtubeApi.exportPlaylist(playlistToExport);
-    updatePlaylistLocally(exportedPlaylist);
-  }
-*/
+  /*
+    async function exportPlaylist(playlistToExport: Playlist): void {
+      setExportModal(false);
+      const exportedPlaylist = await youtubeApi.exportPlaylist(playlistToExport);
+      updatePlaylistLocally(exportedPlaylist);
+    }
+  */
 
-/*
-  function deletePlaylistLocally() {
-    store.dispatch(deleteAllPlaylists());
-    localStorage.removeItem('playlists');
-    dispatch(selectPlaylist(null));
-  }
-*/
+  /*
+    function deletePlaylistLocally() {
+      store.dispatch(deleteAllPlaylists());
+      localStorage.removeItem('playlists');
+      dispatch(selectPlaylist(null));
+    }
+  */
 
   async function updatePlaylistWithYoutubeSongs(playlistToUpdate: Playlist) {
     setUpdateModal(false);
-    console.log(playlistToUpdate);
-    console.log('Tracks:');
-    // safe all tracks without youtubeId to a new array and console log them
-    const tracksWithoutYoutubeId = playlistToUpdate.tracks.filter(
-      (track) => !track.YoutubeId,
-    );
-    console.log(tracksWithoutYoutubeId);
-
-    const updatedPlaylist = await youtubeApi.updatePlaylist(playlistToUpdate);
+    const updatedPlaylist: Playlist = await youtubeApi.updatePlaylist(playlistToUpdate);
     updatePlaylist(updatedPlaylist);
-    console.log(updatedPlaylist);
-    // safe all the songs that are equal to the tracksWithoutYoutubeId array to a new array and console log them
-    const updatedSongs = updatedPlaylist.tracks.filter((track) =>
-      tracksWithoutYoutubeId.includes(track),
-    );
-    console.log(updatedSongs);
   }
 
   const playlists = playlistStore((state: PlaylistState) => state.playlists);
@@ -89,18 +75,18 @@ export function ExImportButton() {
             <Download className="mr-3" />
             Import
           </DropdownMenuItem>
-       { <DropdownMenuItem onClick={() => setUpdateModal(true)}>
-          <RefreshCw className="mr-3" />
-          Update
-        </DropdownMenuItem>
-         /*<DropdownMenuItem onClick={() => setExportModal(true)}>
-           <Upload className="mr-3" />
-           Export
-         </DropdownMenuItem>
-         <DropdownMenuItem onClick={() => deletePlaylistLocally()}>
-           <Trash2 className="mr-3" />
-           Delete
-         </DropdownMenuItem>*/}
+          {<DropdownMenuItem onClick={() => setUpdateModal(true)}>
+            <RefreshCw className="mr-3" />
+            Update
+          </DropdownMenuItem>
+            /*<DropdownMenuItem onClick={() => setExportModal(true)}>
+              <Upload className="mr-3" />
+              Export
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => deletePlaylistLocally()}>
+              <Trash2 className="mr-3" />
+              Delete
+            </DropdownMenuItem>*/}
         </DropdownMenuContent>
       </DropdownMenu>
       {updateModal &&

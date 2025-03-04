@@ -26,8 +26,7 @@ const usePlaylistStore = create<PlaylistState>()(
       updatePlaylist: (updatedPlaylist) => {
         set({
           playlists: get().playlists.map((p) =>
-            p.SpotifyId === updatedPlaylist.SpotifyId ||
-            p.YoutubeId === updatedPlaylist.YoutubeId
+            p.SpotifyId === updatedPlaylist.SpotifyId
               ? updatedPlaylist
               : p
           ),
@@ -44,7 +43,7 @@ const usePlaylistStore = create<PlaylistState>()(
 
       selectPlaylist: (playlistId) => {
         const playlist = get().playlists.find(
-          (p) => p.SpotifyId === playlistId || p.YoutubeId === playlistId
+          (p) => p.SpotifyId === playlistId
         );
         set({ selectedPlaylist: playlist || null });
       },
