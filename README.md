@@ -14,8 +14,9 @@ Will transcribe your playlists from Spotify to YouTube.
 - [x] create a YouTube playlist
 - [x] add songs to a YouTube playlist
 - [X] handle quota exceeded on update playlist
-- [ ] fix redux error (doesn't cause any issues yet so it can wait) -> use zustand instead with indexedDB
-- [ ] use Ref instead of document.getElementById
+- [x] use Ref instead of document.getElementById
+- [x] fix redux error (doesn't cause any issues yet so it can wait) -> use zustand instead with indexedDB
+- [ ] use structured copy or functions that return an object instead of referencing it
 
 ### ui improvements
 

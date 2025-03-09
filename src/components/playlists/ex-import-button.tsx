@@ -23,8 +23,8 @@ import usePlaylistStore from '../../lib/store/playlist-store.ts';
 import playlistStore from '../../lib/store/playlist-store.ts';
 
 export function ExImportButton() {
-  const spotifyApi = new SpotifyAPIService();
-  const youtubeApi = new YoutubeAPIService();
+  const spotifyApi = SpotifyAPIService.getInstance();
+  const youtubeApi =  YoutubeAPIService.getInstance();
   const {
     addPlaylist,
     updatePlaylist,
@@ -34,7 +34,7 @@ export function ExImportButton() {
   } = usePlaylistStore();
 
   const [updateModal, setUpdateModal] = useState(false);
-  // const [exportModal, setExportModal] = useState(false);
+  const [exportModal, setExportModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 
   const importPlaylist = async (importedPlaylists: Playlist[]) => {
@@ -44,29 +44,17 @@ export function ExImportButton() {
     });
   };
 
-  /*
-    async function exportPlaylist(playlistToExport: Playlist): void {
+    async function exportPlaylist(playlistToExport: Playlist): Promise<void> {
       setExportModal(false);
-      const exportedPlaylist = await youtubeApi.exportPlaylist(playlistToExport);
-      updatePlaylistLocally(exportedPlaylist);
+      updatePlaylist(await youtubeApi.exportPlaylist(playlistToExport));
     }
-  */
-
-  /*
-    function deletePlaylistLocally() {
-      store.dispatch(deleteAllPlaylists());
-      localStorage.removeItem('playlists');
-      dispatch(selectPlaylist(null));
-    }
-  */
 
   async function updatePlaylistWithYoutubeSongs(playlistToUpdate: Playlist) {
     setUpdateModal(false);
-    const updatedPlaylist: Playlist = await youtubeApi.updatePlaylist(playlistToUpdate);
-    updatePlaylist(updatedPlaylist);
+    updatePlaylist(await youtubeApi.updatePlaylist(playlistToUpdate));
   }
 
-  const selectedPlaylist =  usePlaylistStore(state=> state.selectedPlaylist);
+  const selectedPlaylist = usePlaylistStore(state => state.selectedPlaylist);
   const playlists = playlistStore((state: PlaylistState) => state.playlists);
   console.log(playlists);
   return (
@@ -82,18 +70,18 @@ export function ExImportButton() {
             <Download className="mr-3" />
             Import
           </DropdownMenuItem>
-          {<DropdownMenuItem onClick={() => setUpdateModal(true)}>
+          <DropdownMenuItem onClick={() => setUpdateModal(true)}>
             <RefreshCw className="mr-3" />
             Update
-          </DropdownMenuItem>
-            /*<DropdownMenuItem onClick={() => setExportModal(true)}>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setExportModal(true)}>
               <Upload className="mr-3" />
               Export
-            </DropdownMenuItem>*/}
-            <DropdownMenuItem onClick={() => setDeleteModal(true)}>
-              <Trash2 className="mr-3" />
-              Delete
             </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setDeleteModal(true)}>
+            <Trash2 className="mr-3" />
+            Delete
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       {updateModal &&
@@ -131,7 +119,6 @@ export function ExImportButton() {
           </Card>,
           document.body,
         )}
-      {/*
       {exportModal &&
         createPortal(
           <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4'}>
@@ -167,7 +154,6 @@ export function ExImportButton() {
           </Card>,
           document.body,
         )}
-  */}
       {deleteModal &&
         createPortal(
           <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4'}>
