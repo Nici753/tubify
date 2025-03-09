@@ -1,4 +1,4 @@
-import { Playlist, YoutubePlaylistResponse } from '../types/Playlist.ts';
+import { Playlist } from '../types/Playlist.ts';
 import { Track, YouTubeTrackResponse } from '../types/Track.ts';
 import useUserStore from '../store/user-store.ts';
 
@@ -33,7 +33,7 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     return await fetch(request);
   }
 
-  async youtubePostRequest(endpoint: string, body: JSON): Promise<Response> {
+  async youtubePostRequest(endpoint: string, body: { snippet: { title: string } }): Promise<Response> {
     const request: Request = new Request(
       `https://www.googleapis.com/youtube/v3${endpoint}`,
       {
@@ -114,18 +114,15 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
       // Add songs to playlist
       for (const song of songsToExport) {
         try {
-          await this.youtubePostRequest(
-            '/playlistItems?part=snippet',
-            {
-              snippet: {
-                playlistId: playlistToExport.YoutubeId,
-                resourceId: {
-                  kind: 'youtube#video',
-                  videoId: song.YoutubeId,
-                },
+          await this.youtubePostRequest('/playlistItems?part=snippet', {
+            snippet: {
+              playlistId: playlistToExport.YoutubeId,
+              resourceId: {
+                kind: 'youtube#video',
+                videoId: song.YoutubeId,
               },
             },
-          );
+          });
         } catch (e) {
           console.error('Failed to add song to Youtube playlist: ' + song.YoutubeId + ', Error: ' + e);
         }

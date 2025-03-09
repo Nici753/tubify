@@ -9,7 +9,7 @@ import { Folder, Download, Upload, Trash2, RefreshCw } from 'lucide-react';
 import { SpotifyAPIService } from '../../lib/apis/SpotifyAPIService.ts';
 import { Playlist, PlaylistState } from '../../lib/types/Playlist.ts';
 import { YoutubeAPIService } from '../../lib/apis/YoutubeAPIService.ts';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
   Card,
@@ -28,9 +28,14 @@ export function ExImportButton() {
   const {
     addPlaylist,
     updatePlaylist,
+    removePlaylist,
+    clearPlaylists,
+    unselectPlaylist,
   } = usePlaylistStore();
+
   const [updateModal, setUpdateModal] = useState(false);
   // const [exportModal, setExportModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const importPlaylist = async (importedPlaylists: Playlist[]) => {
     const playlists: Playlist[] = await spotifyApi.importPlaylist(importedPlaylists);
@@ -61,6 +66,7 @@ export function ExImportButton() {
     updatePlaylist(updatedPlaylist);
   }
 
+  const selectedPlaylist =  usePlaylistStore(state=> state.selectedPlaylist);
   const playlists = playlistStore((state: PlaylistState) => state.playlists);
   console.log(playlists);
   return (
@@ -83,11 +89,11 @@ export function ExImportButton() {
             /*<DropdownMenuItem onClick={() => setExportModal(true)}>
               <Upload className="mr-3" />
               Export
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => deletePlaylistLocally()}>
+            </DropdownMenuItem>*/}
+            <DropdownMenuItem onClick={() => setDeleteModal(true)}>
               <Trash2 className="mr-3" />
               Delete
-            </DropdownMenuItem>*/}
+            </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       {updateModal &&
@@ -162,6 +168,50 @@ export function ExImportButton() {
           document.body,
         )}
   */}
+      {deleteModal &&
+        createPortal(
+          <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4'}>
+            <CardHeader>
+              <CardTitle>Delete Playlists Locally</CardTitle>
+              <CardDescription>
+                Do you want to delete the selected or all playlist(s)?
+              </CardDescription>
+            </CardHeader>
+            <CardContent className={'flex flex-row gap-2 h-fit'}>
+              <div className="grid grid-cols-2 gap-2 w-full">
+                {selectedPlaylist && selectedPlaylist.SpotifyId && (
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => {
+                      removePlaylist(selectedPlaylist.SpotifyId);
+                      unselectPlaylist();
+                      setDeleteModal(false);
+                    }}
+                  >
+                    Delete Selected Playlist
+                  </Button>
+                )}
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    clearPlaylists();
+                    setDeleteModal(false);
+                  }}
+                >
+                  Delete All Playlists
+                </Button>
+              </div>
+            </CardContent>
+            <CardFooter className="flex flex-row-reverse">
+              <Button variant="outline" onClick={() => setDeleteModal(false)}>
+                Cancel
+              </Button>
+            </CardFooter>
+          </Card>,
+          document.body,
+        )}
     </>
   );
 }

@@ -10,6 +10,7 @@ interface PlaylistState {
   updatePlaylist: (updatedPlaylist: Playlist) => void;
   removePlaylist: (playlistId: string) => void;
   selectPlaylist: (playlistId: string) => void;
+  unselectPlaylist: () => void;
   clearPlaylists: () => void;
 }
 
@@ -36,7 +37,7 @@ const usePlaylistStore = create<PlaylistState>()(
       removePlaylist: (playlistId) => {
         set({
           playlists: get().playlists.filter(
-            (p) => p.SpotifyId !== playlistId && p.YoutubeId !== playlistId
+            (p) => p.SpotifyId !== playlistId
           ),
         });
       },
@@ -46,6 +47,10 @@ const usePlaylistStore = create<PlaylistState>()(
           (p) => p.SpotifyId === playlistId
         );
         set({ selectedPlaylist: playlist || null });
+      },
+
+      unselectPlaylist: () => {
+        set({ selectedPlaylist: null });
       },
 
       clearPlaylists: () => {
