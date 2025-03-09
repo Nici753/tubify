@@ -47,7 +47,7 @@ export function TopBar() {
       {spotifyLoggedIn && youtubeLoggedIn && <ExImportButton />}
       {!spotifyLoggedIn && <SpotifyLoginButton />}
       {!youtubeLoggedIn && <YoutubeLoginButton />}
-      {youtubeLoggedIn && <LogoutButton />}
+      {(youtubeLoggedIn || spotifyLoggedIn) && <LogoutButton />}
       <div className="flex-auto content-center">
         {user_name && <NameTag />}
       </div>

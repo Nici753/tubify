@@ -56,7 +56,6 @@ export function ExImportButton() {
 
   const selectedPlaylist = usePlaylistStore(state => state.selectedPlaylist);
   const playlists = playlistStore((state: PlaylistState) => state.playlists);
-  console.log(playlists);
   return (
     <>
       <DropdownMenu>
