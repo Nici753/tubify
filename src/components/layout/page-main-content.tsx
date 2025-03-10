@@ -4,9 +4,9 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../ui/resi
 
 export function PageMainContent() {
   return (
-    <div className={'flex-grow'}>
+    <div className={'flex-grow flex h-screen overflow-hidden'}>
       <ResizablePanelGroup direction={'horizontal'}>
-        <ResizablePanel defaultSize={15}>
+        <ResizablePanel defaultSize={25}>
           <Sidebar />
         </ResizablePanel>
         <ResizableHandle />
