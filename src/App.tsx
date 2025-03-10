@@ -3,9 +3,9 @@ import { View } from './components/layout/View.tsx';
 
 function App() {
   return (
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        {<View />}
-      </ThemeProvider>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      {<View />}
+    </ThemeProvider>
   );
 }
 

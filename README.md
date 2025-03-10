@@ -13,7 +13,7 @@ Will transcribe your playlists from Spotify to YouTube.
 - [x] get your playlists from YouTube
 - [x] create a YouTube playlist
 - [x] add songs to a YouTube playlist
-- [X] handle quota exceeded on update playlist
+- [x] handle quota exceeded on update playlist
 - [x] use Ref instead of document.getElementById
 - [x] fix redux error (doesn't cause any issues yet so it can wait) -> use zustand instead with indexedDB
 - [ ] use structured copy or functions that return an object instead of referencing it
@@ -21,7 +21,8 @@ Will transcribe your playlists from Spotify to YouTube.
 ### ui improvements
 
 - [x] make sidebar and component resizable https://ui.shadcn.com/docs/components/resizable
-- [ ] make sidebar and component scrollable https://ui.shadcn.com/docs/components/scroll-area
+- [x] make sidebar and component scrollable https://ui.shadcn.com/docs/components/scroll-area
+- [x] make modals scrollable https://ui.shadcn.com/docs/components/scroll-area
 - [ ] add toast notifications about import status
 - [ ] add loading spinner
 

@@ -1,6 +1,10 @@
 import { Sidebar } from '../playlists/sidebar.tsx';
 import { Content } from '../playlists/content.tsx';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../ui/resizable.tsx';
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from '../ui/resizable.tsx';
 
 export function PageMainContent() {
   return (

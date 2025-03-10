@@ -4,7 +4,8 @@ import { useGoogleLogin } from '@react-oauth/google';
 import useUserStore from '../../lib/store/user-store.ts';
 
 export function YoutubeLoginButton() {
-  const { setYouTubeToken, setUserName, setUserEmail, setUserPicture } = useUserStore();
+  const { setYouTubeToken, setUserName, setUserEmail, setUserPicture } =
+    useUserStore();
   const login = useGoogleLogin({
     scope: 'https://www.googleapis.com/auth/youtube',
     onSuccess: async (tokenResponse) => {
@@ -28,7 +29,7 @@ export function YoutubeLoginButton() {
         setUserEmail(userInfo.email);
         setUserName(userInfo.name);
         setUserPicture(userInfo.picture);
-        
+
         window.location.reload();
       } catch (error) {
         console.error('Failed to fetch user information: ' + error);

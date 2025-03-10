@@ -25,7 +25,7 @@ import playlistStore from '../../lib/store/playlist-store.ts';
 
 export function ExImportButton() {
   const spotifyApi = SpotifyAPIService.getInstance();
-  const youtubeApi =  YoutubeAPIService.getInstance();
+  const youtubeApi = YoutubeAPIService.getInstance();
   const {
     addPlaylist,
     updatePlaylist,
@@ -39,23 +39,24 @@ export function ExImportButton() {
   const [deleteModal, setDeleteModal] = useState(false);
 
   const importPlaylist = async (importedPlaylists: Playlist[]) => {
-    const playlists: Playlist[] = await spotifyApi.importPlaylist(importedPlaylists);
+    const playlists: Playlist[] =
+      await spotifyApi.importPlaylist(importedPlaylists);
     playlists.forEach((playlist) => {
       addPlaylist(playlist);
     });
   };
 
-    async function exportPlaylist(playlistToExport: Playlist): Promise<void> {
-      setExportModal(false);
-      updatePlaylist(await youtubeApi.exportPlaylist(playlistToExport));
-    }
+  async function exportPlaylist(playlistToExport: Playlist): Promise<void> {
+    setExportModal(false);
+    updatePlaylist(await youtubeApi.exportPlaylist(playlistToExport));
+  }
 
   async function updatePlaylistWithYoutubeSongs(playlistToUpdate: Playlist) {
     setUpdateModal(false);
     updatePlaylist(await youtubeApi.updatePlaylist(playlistToUpdate));
   }
 
-  const selectedPlaylist = usePlaylistStore(state => state.selectedPlaylist);
+  const selectedPlaylist = usePlaylistStore((state) => state.selectedPlaylist);
   const playlists = playlistStore((state: PlaylistState) => state.playlists);
   return (
     <>
@@ -73,11 +74,11 @@ export function ExImportButton() {
           <DropdownMenuItem onClick={() => setUpdateModal(true)}>
             <RefreshCw className="mr-3" />
             Update
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setExportModal(true)}>
-              <Upload className="mr-3" />
-              Export
-            </DropdownMenuItem>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setExportModal(true)}>
+            <Upload className="mr-3" />
+            Export
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setDeleteModal(true)}>
             <Trash2 className="mr-3" />
             Delete
@@ -86,7 +87,11 @@ export function ExImportButton() {
       </DropdownMenu>
       {updateModal &&
         createPortal(
-          <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950'}>
+          <Card
+            className={
+              'inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950'
+            }
+          >
             <CardHeader>
               <CardTitle>Update Playlists</CardTitle>
               <CardDescription>
@@ -99,7 +104,9 @@ export function ExImportButton() {
                   {playlists.map((playlist) => (
                     <div
                       key={playlist.SpotifyId}
-                      className={'flex items-center space-x-2 p-1 cursor-pointer'}
+                      className={
+                        'flex items-center space-x-2 p-1 cursor-pointer'
+                      }
                       onClick={() => updatePlaylistWithYoutubeSongs(playlist)}
                     >
                       <img
@@ -108,8 +115,8 @@ export function ExImportButton() {
                         className={'w-12 h-12 rounded'}
                       />
                       <span className={'flex-grow text-left truncate'}>
-                  {playlist.name}
-                </span>
+                        {playlist.name}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -125,7 +132,11 @@ export function ExImportButton() {
         )}
       {exportModal &&
         createPortal(
-          <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950'}>
+          <Card
+            className={
+              'inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950'
+            }
+          >
             <CardHeader>
               <CardTitle>Export Playlists</CardTitle>
               <CardDescription>
@@ -138,7 +149,9 @@ export function ExImportButton() {
                   {playlists.map((playlist: Playlist) => (
                     <div
                       key={playlist.SpotifyId}
-                      className={'flex items-center space-x-2 p-1 cursor-pointer'}
+                      className={
+                        'flex items-center space-x-2 p-1 cursor-pointer'
+                      }
                       onClick={() => exportPlaylist(playlist)}
                     >
                       <img
@@ -147,8 +160,8 @@ export function ExImportButton() {
                         className={'w-12 h-12 rounded'}
                       />
                       <span className={'flex-grow text-left truncate'}>
-                  {playlist.name}
-                </span>
+                        {playlist.name}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -164,7 +177,11 @@ export function ExImportButton() {
         )}
       {deleteModal &&
         createPortal(
-          <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950'}>
+          <Card
+            className={
+              'inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950'
+            }
+          >
             <CardHeader>
               <CardTitle>Delete Playlists Locally</CardTitle>
               <CardDescription>

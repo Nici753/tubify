@@ -16,15 +16,15 @@ export type SpotifyTrackResponse = {
       images: {
         url: string;
       }[];
-    }
+    };
     external_urls: {
-      spotify: string
-    }
+      spotify: string;
+    };
     artists: {
       name: string;
     }[];
-  }
-}
+  };
+};
 
 export type YouTubeTrackResponse = {
   items: {

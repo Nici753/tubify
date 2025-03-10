@@ -16,11 +16,11 @@ export type SpotifyPlaylistResponse = {
   images: {
     url: string;
   }[];
-  owner: {display_name: string};
+  owner: { display_name: string };
   external_urls: {
     spotify: string;
-  }
-}
+  };
+};
 
 export type PlaylistState = {
   playlists: Playlist[];

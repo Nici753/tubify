@@ -7,9 +7,9 @@ export interface SpotifyAPIInterface {
 
   getUserName(): Promise<string>;
 
-  importPlaylist(importedPlaylists:Playlist[]): void;
+  importPlaylist(importedPlaylists: Playlist[]): void;
 
-  getAllUsersPlaylist(importedPlaylists:Playlist[]): Promise<Playlist[]>;
+  getAllUsersPlaylist(importedPlaylists: Playlist[]): Promise<Playlist[]>;
 
   getPlaylistItems(playlistId: string | undefined): Promise<Track[]>;
 }
@@ -17,8 +17,7 @@ export interface SpotifyAPIInterface {
 export class SpotifyAPIService implements SpotifyAPIInterface {
   private static instance: SpotifyAPIService;
 
-  private constructor() {
-  }
+  private constructor() {}
 
   public static getInstance(): SpotifyAPIService {
     if (!SpotifyAPIService.instance) {
@@ -27,7 +26,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
     return SpotifyAPIService.instance;
   }
 
-  spotifyToken = useUserStore(state => state.spotify_access_token);
+  spotifyToken = useUserStore((state) => state.spotify_access_token);
   baseURL: string = 'https://api.spotify.com/v1';
 
   async fetchFromSpotify(requestURL: string): Promise<Response> {
@@ -48,8 +47,8 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
     try {
       const user_display_name: string = await this.getUserName();
       let data: {
-        next: string,
-        items: SpotifyPlaylistResponse[]
+        next: string;
+        items: SpotifyPlaylistResponse[];
       } = {
         next: `${this.baseURL}/me/playlists`,
         items: [],
@@ -67,7 +66,9 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
         const playlist: Playlist[] = data.items
           .filter((item) => {
             // Handle Spotify pagination issues (last playlist is first on the next page)
-            const checkItem = item.owner.display_name === user_display_name && !spotifyPlaylistIds.includes(item.id);
+            const checkItem =
+              item.owner.display_name === user_display_name &&
+              !spotifyPlaylistIds.includes(item.id);
             spotifyPlaylistIds.push(item.id);
             return checkItem;
           })
@@ -93,10 +94,9 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
   }
 
   async getPlaylistItems(playlistId: string): Promise<Track[]> {
-
     let data: {
       next: string;
-      items: SpotifyTrackResponse[]
+      items: SpotifyTrackResponse[];
     } = { next: `${this.baseURL}/playlists/${playlistId}/tracks`, items: [] };
 
     let songs: Track[] = [];
@@ -126,7 +126,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
     return data.display_name;
   }
 
-  async importPlaylist(importedPlaylists:Playlist[]) {
+  async importPlaylist(importedPlaylists: Playlist[]) {
     return await this.getAllUsersPlaylist(importedPlaylists);
   }
 }

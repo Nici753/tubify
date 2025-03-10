@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { Playlist } from "../types/Playlist.ts";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { Playlist } from '../types/Playlist.ts';
 
 interface PlaylistState {
   playlists: Playlist[];
@@ -27,24 +27,20 @@ const usePlaylistStore = create<PlaylistState>()(
       updatePlaylist: (updatedPlaylist) => {
         set({
           playlists: get().playlists.map((p) =>
-            p.SpotifyId === updatedPlaylist.SpotifyId
-              ? updatedPlaylist
-              : p
+            p.SpotifyId === updatedPlaylist.SpotifyId ? updatedPlaylist : p,
           ),
         });
       },
 
       removePlaylist: (playlistId) => {
         set({
-          playlists: get().playlists.filter(
-            (p) => p.SpotifyId !== playlistId
-          ),
+          playlists: get().playlists.filter((p) => p.SpotifyId !== playlistId),
         });
       },
 
       selectPlaylist: (playlistId) => {
         const playlist = get().playlists.find(
-          (p) => p.SpotifyId === playlistId
+          (p) => p.SpotifyId === playlistId,
         );
         set({ selectedPlaylist: playlist || null });
       },
@@ -55,11 +51,11 @@ const usePlaylistStore = create<PlaylistState>()(
 
       clearPlaylists: () => {
         set({ playlists: [], selectedPlaylist: null });
-        localStorage.removeItem("playlists-data"); // Clear localStorage
+        localStorage.removeItem('playlists-data'); // Clear localStorage
       },
     }),
-    { name: "playlists-data" } // Key for localStorage
-  )
+    { name: 'playlists-data' }, // Key for localStorage
+  ),
 );
 
 export default usePlaylistStore;

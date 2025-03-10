@@ -2,41 +2,38 @@ import { Playlist } from '../types/Playlist.ts';
 import { Track, YouTubeTrackResponse } from '../types/Track.ts';
 import useUserStore from '../store/user-store.ts';
 
-export interface YoutubeAPIInterface {
-}
+export interface YoutubeAPIInterface {}
 
 type YoutubePostRequest = {
   snippet: {
-    playlistId: string
+    playlistId: string;
     resourceId: {
-      kind: string
-      videoId: string
-    }
-  }
-}
+      kind: string;
+      videoId: string;
+    };
+  };
+};
 
 type YoutubePlaylistPostUpdateTitle = {
   snippet: {
-    title: string
-  }
-}
+    title: string;
+  };
+};
 
 type YoutubePlaylistResponse = {
   items: {
     snippet: {
       resourceId: {
-        videoId: string
-      }
-    }
-  }[]
-}
-
+        videoId: string;
+      };
+    };
+  }[];
+};
 
 export class YoutubeAPIService implements YoutubeAPIInterface {
   private static instance: YoutubeAPIService;
 
-  private constructor() {
-  }
+  private constructor() {}
 
   public static getInstance(): YoutubeAPIService {
     if (!YoutubeAPIService.instance) {
@@ -45,7 +42,7 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     return YoutubeAPIService.instance;
   }
 
-  youtubeToken = useUserStore(state => state.youtube_access_token);
+  youtubeToken = useUserStore((state) => state.youtube_access_token);
 
   async youtubeGetRequest(endpoint: string): Promise<Response> {
     const request: Request = new Request(
@@ -60,7 +57,10 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     return await fetch(request);
   }
 
-  async youtubePostRequest(endpoint: string, body: YoutubePostRequest | YoutubePlaylistPostUpdateTitle): Promise<Response> {
+  async youtubePostRequest(
+    endpoint: string,
+    body: YoutubePostRequest | YoutubePlaylistPostUpdateTitle,
+  ): Promise<Response> {
     const request: Request = new Request(
       `https://www.googleapis.com/youtube/v3${endpoint}`,
       {
@@ -88,7 +88,12 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
         track.YoutubeUrl = `https://www.youtube.com/watch?v=${track.YoutubeId}`;
       }
     } catch (e) {
-      console.error('Failed to search for track on Youtube: ' + track.name + ', Error: ' + e);
+      console.error(
+        'Failed to search for track on Youtube: ' +
+          track.name +
+          ', Error: ' +
+          e,
+      );
     }
     return track;
   }
@@ -110,7 +115,7 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
   async exportPlaylist(playlistToExport: Playlist): Promise<Playlist> {
     const newPlaylist: Playlist = structuredClone(playlistToExport);
 
-    type TrackWithId = (Track) & { YoutubeId: string }; //override properties of track interface
+    type TrackWithId = Track & { YoutubeId: string }; //override properties of track interface
     const hasId = (item: Track): item is TrackWithId => 'YoutubeId' in item; //Predicate to tell that tracks have an id
 
     // Guard clause: All tracks in playlist must have a YoutubeId
@@ -139,20 +144,25 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
         `/playlistItems?part=snippet&playlistId=${newPlaylist.YoutubeId}`,
       );
       const data: YoutubePlaylistResponse = await response.json();
-      const songsInPlaylist: Array<string> = data.items.map((item) => item.snippet.resourceId.videoId);
+      const songsInPlaylist: Array<string> = data.items.map(
+        (item) => item.snippet.resourceId.videoId,
+      );
       // Remove songs that are already in the playlist form songs to export
-      newPlaylist.tracks = newPlaylist.tracks.filter((song) => !songsInPlaylist.includes(song.YoutubeId));
+      newPlaylist.tracks = newPlaylist.tracks.filter(
+        (song) => !songsInPlaylist.includes(song.YoutubeId),
+      );
     }
 
-    type PlaylistWithId = (Playlist) & { YoutubeId: string }; //override properties of track interface
-    const playlistHasId = (item: Playlist): item is PlaylistWithId => 'YoutubeId' in item; //Predicate to tell that tracks have an id
+    type PlaylistWithId = Playlist & { YoutubeId: string }; //override properties of track interface
+    const playlistHasId = (item: Playlist): item is PlaylistWithId =>
+      'YoutubeId' in item; //Predicate to tell that tracks have an id
 
     if (!playlistHasId(newPlaylist)) {
       console.error('Playlist has no YoutubeId');
       return newPlaylist;
     }
     // Add songs to playlist
-    for (const song  of newPlaylist.tracks as TrackWithId[]) {
+    for (const song of newPlaylist.tracks as TrackWithId[]) {
       try {
         await this.youtubePostRequest('/playlistItems?part=snippet', {
           snippet: {
@@ -164,7 +174,12 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
           },
         });
       } catch (e) {
-        console.error('Failed to add song to Youtube playlist: ' + song.YoutubeId + ', Error: ' + e);
+        console.error(
+          'Failed to add song to Youtube playlist: ' +
+            song.YoutubeId +
+            ', Error: ' +
+            e,
+        );
       }
     }
     return newPlaylist;

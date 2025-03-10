@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface UserState {
   spotify_access_token: string | null;
@@ -41,8 +41,8 @@ const useUserStore = create<UserState>()(
           user_picture: null,
         }),
     }),
-    { name: "user-data" } // Key for localStorage
-  )
+    { name: 'user-data' }, // Key for localStorage
+  ),
 );
 
 export default useUserStore;

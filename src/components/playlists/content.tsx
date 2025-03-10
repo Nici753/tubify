@@ -5,7 +5,7 @@ import usePlaylistStore from '../../lib/store/playlist-store.ts';
 import { ScrollArea } from '../ui/scroll-area.tsx';
 
 export function Content() {
-  const selectedPlaylist = usePlaylistStore(state => state.selectedPlaylist);
+  const selectedPlaylist = usePlaylistStore((state) => state.selectedPlaylist);
 
   const [currentSong, setCurrentSong] = useState<string | null>(null);
   const [parentWidth, setParentWidth] = useState<number>(0);
@@ -35,7 +35,9 @@ export function Content() {
       className={'flex flex-col h-full w-full overflow-hidden'}
       ref={parentRefWidth}
     >
-      <h1 className={'text-3xl font-bold px-3 pt-3 mb-2'}>{selectedPlaylist.name}</h1>
+      <h1 className={'text-3xl font-bold px-3 pt-3 mb-2'}>
+        {selectedPlaylist.name}
+      </h1>
       <ScrollArea className={'h-[calc(100%-4rem)] w-full'}>
         <div className={'grid grid-cols-1 gap-2 px-3 pb-32'}>
           {selectedPlaylist.tracks?.map((song) => (

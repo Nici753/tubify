@@ -2,7 +2,6 @@ import { Button } from '../ui/Button.tsx';
 import { LogOut } from 'lucide-react';
 
 export function LogoutButton() {
-
   function handleLogout() {
     // localStorage.clear();
     localStorage.removeItem('user-data');
