@@ -6,7 +6,7 @@ export function PageMainContent() {
   return (
     <div className={'flex-grow flex h-screen overflow-hidden'}>
       <ResizablePanelGroup direction={'horizontal'}>
-        <ResizablePanel defaultSize={25}>
+        <ResizablePanel defaultSize={24}>
           <Sidebar />
         </ResizablePanel>
         <ResizableHandle />

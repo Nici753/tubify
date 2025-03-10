@@ -19,6 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card.tsx';
+import { ScrollArea } from '../ui/scroll-area.tsx';
 import usePlaylistStore from '../../lib/store/playlist-store.ts';
 import playlistStore from '../../lib/store/playlist-store.ts';
 
@@ -85,30 +86,34 @@ export function ExImportButton() {
       </DropdownMenu>
       {updateModal &&
         createPortal(
-          <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4'}>
+          <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950'}>
             <CardHeader>
               <CardTitle>Update Playlists</CardTitle>
               <CardDescription>
                 Choose a playlist to add song equivalents from YouTube
               </CardDescription>
             </CardHeader>
-            <CardContent className={'flex flex-col gap-2 h-fit'}>
-              {playlists.map((playlist) => (
-                <div
-                  key={playlist.SpotifyId}
-                  className={'flex items-center space-x-2 p-1 cursor-pointer'}
-                  onClick={() => updatePlaylistWithYoutubeSongs(playlist)}
-                >
-                  <img
-                    src={playlist.imageUrl}
-                    alt={playlist.name}
-                    className={'w-12 h-12 rounded'}
-                  />
-                  <span className={'flex-grow text-left truncate'}>
-                    {playlist.name}
-                  </span>
+            <CardContent className={'flex flex-col h-fit'}>
+              <ScrollArea className={'h-64 w-full pr-4'}>
+                <div className={'flex flex-col gap-2'}>
+                  {playlists.map((playlist) => (
+                    <div
+                      key={playlist.SpotifyId}
+                      className={'flex items-center space-x-2 p-1 cursor-pointer'}
+                      onClick={() => updatePlaylistWithYoutubeSongs(playlist)}
+                    >
+                      <img
+                        src={playlist.imageUrl}
+                        alt={playlist.name}
+                        className={'w-12 h-12 rounded'}
+                      />
+                      <span className={'flex-grow text-left truncate'}>
+                  {playlist.name}
+                </span>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </ScrollArea>
             </CardContent>
             <CardFooter className="flex flex-row-reverse">
               <Button variant="outline" onClick={() => setUpdateModal(false)}>
@@ -120,30 +125,34 @@ export function ExImportButton() {
         )}
       {exportModal &&
         createPortal(
-          <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4'}>
+          <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950'}>
             <CardHeader>
               <CardTitle>Export Playlists</CardTitle>
               <CardDescription>
                 Choose a playlist to export to YouTube
               </CardDescription>
             </CardHeader>
-            <CardContent className={'flex flex-col gap-2 h-fit'}>
-              {playlists.map((playlist: Playlist) => (
-                <div
-                  key={playlist.SpotifyId}
-                  className={'flex items-center space-x-2 p-1 cursor-pointer'}
-                  onClick={() => exportPlaylist(playlist)}
-                >
-                  <img
-                    src={playlist.imageUrl}
-                    alt={playlist.name}
-                    className={'w-12 h-12 rounded'}
-                  />
-                  <span className={'flex-grow text-left truncate'}>
-                    {playlist.name}
-                  </span>
+            <CardContent className={'flex flex-col h-fit'}>
+              <ScrollArea className={'h-64 w-full pr-4'}>
+                <div className={'flex flex-col gap-2'}>
+                  {playlists.map((playlist: Playlist) => (
+                    <div
+                      key={playlist.SpotifyId}
+                      className={'flex items-center space-x-2 p-1 cursor-pointer'}
+                      onClick={() => exportPlaylist(playlist)}
+                    >
+                      <img
+                        src={playlist.imageUrl}
+                        alt={playlist.name}
+                        className={'w-12 h-12 rounded'}
+                      />
+                      <span className={'flex-grow text-left truncate'}>
+                  {playlist.name}
+                </span>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </ScrollArea>
             </CardContent>
             <CardFooter className="flex flex-row-reverse">
               <Button variant="outline" onClick={() => setExportModal(false)}>
@@ -155,7 +164,7 @@ export function ExImportButton() {
         )}
       {deleteModal &&
         createPortal(
-          <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4'}>
+          <Card className={'inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950'}>
             <CardHeader>
               <CardTitle>Delete Playlists Locally</CardTitle>
               <CardDescription>
