@@ -2,8 +2,6 @@ import { Playlist, SpotifyPlaylistResponse } from '../types/Playlist.ts';
 import { Track, SpotifyTrackResponse } from '../types/Track.ts';
 import useUserStore from '../store/user-store.ts';
 import { toast } from 'sonner';
-import usePlaylistStore from '../store/playlist-store.ts';
-
 export interface SpotifyAPIInterface {
   fetchFromSpotify(endpoint: string): Promise<Response>;
 
@@ -20,7 +18,8 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
 
   private static instance: SpotifyAPIService;
 
-  private constructor() {}
+  private constructor() {
+  }
 
   public static getInstance(): SpotifyAPIService {
     if (!SpotifyAPIService.instance) {
@@ -86,12 +85,16 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
       const numberOfPlaylistsToImport = playlists.length;
       let numberOfImportedPlaylists = 0;
 
-      toast('Importing Playlists', {description: numberOfImportedPlaylists + ' of ' + numberOfPlaylistsToImport });
+      toast('Importing Playlists', {
+        description: numberOfImportedPlaylists + ' of ' + numberOfPlaylistsToImport,
+      });
       for (const playlist of playlists) {
         await this.delay(1000);
         playlist.tracks = await this.getPlaylistItems(playlist.SpotifyId);
         numberOfImportedPlaylists++;
-        toast('Importing Playlists', {description: numberOfImportedPlaylists + ' of ' + numberOfPlaylistsToImport });
+        toast('Importing Playlists', {
+          description: numberOfImportedPlaylists + ' of ' + numberOfPlaylistsToImport,
+        });
       }
 
       return playlists;
