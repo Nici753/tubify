@@ -1,7 +1,8 @@
 import { Button } from '../ui/Button.tsx';
-import { Youtube } from 'lucide-react';
 import { useGoogleLogin } from '@react-oauth/google';
 import useUserStore from '../../lib/store/user-store.ts';
+import { toast } from 'sonner';
+import YouTubeIcon from '../ui/YouTubeIcon.tsx';
 
 export function YoutubeLoginButton() {
   const { setYouTubeToken, setUserName, setUserEmail, setUserPicture } =
@@ -29,6 +30,9 @@ export function YoutubeLoginButton() {
         window.location.reload();
       } catch (error) {
         console.error('Failed to fetch user information: ' + error);
+        toast.error('Failed to fetch user information: ', {
+          description: error.message,
+        });
       }
     },
     onError: (errorResponse) =>
@@ -42,7 +46,7 @@ export function YoutubeLoginButton() {
   return (
     <div className={'mr-3'}>
       <Button variant="outline" onClick={handleLogin}>
-        <Youtube className={'h-[1.2rem] w-[1.2rem] mr-1'} />
+        <YouTubeIcon className={'h-[1.2rem] w-[1.2rem] mr-1'} />
         Login with YouTube
       </Button>
     </div>

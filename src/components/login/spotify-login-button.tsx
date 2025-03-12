@@ -1,5 +1,5 @@
 import { Button } from '../ui/Button.tsx';
-import { Headphones } from 'lucide-react';
+import SpotifyIcon from '../ui/SpotifyIcon.tsx';
 
 export function SpotifyLoginButton() {
   const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID as string;
@@ -16,7 +16,7 @@ export function SpotifyLoginButton() {
   return (
     <div className={'mr-3'}>
       <Button variant="outline" onClick={handleLogin}>
-        <Headphones className={'h-[1.2rem] w-[1.2rem] mr-1'} />
+        <SpotifyIcon className={'h-[1.2rem] w-[1.2rem] mr-1'} />
         Add Spotify Account
       </Button>
     </div>

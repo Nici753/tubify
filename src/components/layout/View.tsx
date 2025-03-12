@@ -7,7 +7,7 @@ export function View() {
     <div className={'flex flex-col h-screen'}>
       <TopBar />
       <PageMainContent />
-      <Toaster />
+      <Toaster richColors={true} theme={'system'} />
     </div>
   );
 }
