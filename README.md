@@ -1,7 +1,10 @@
 # Tubify
 
-A simple music player built with React, TypeScript, and Vite.
-Will transcribe your playlists from Spotify to YouTube.
+A simple music player built with React, TypeScript, Shadcn and Vite.
+Can transcribe your playlists from Spotify to YouTube.
+
+## Disclaimer
+This project is intended for personal and educational use only. It is designed to demonstrate how to interact with the Spotify and YouTube APIs. You must use your own credentials and only access your own data. Do not use this app to copy, distribute, or manipulate copyrighted content. Any public or commercial use may violate the terms of service of Spotify and Google.
 
 ## next steps
 
@@ -34,14 +37,39 @@ add .env file with the following content:
 VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
 VITE_GOOGLE_CLIENT_ID=your_google_client_id
 ```
-
-first install [bun!](https://bun.sh/) alternatively you can use npm or yarn
-
 then run the following commands:
-
 ```bash
 bun install
 bun dev
+```
+
+
+### Spotify API Key
+1. To get your Spotify Client ID:
+2. Go to the Spotify Developer Dashboard.
+3. Log in with your Spotify account.
+4. Click “Create an App”.
+5. Fill in the app name and description.
+6. After creation, you’ll see your Client ID and Client Secret.
+
+Add the Client ID to your .env file:
+```bash
+VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
+```
+
+
+### YouTube (Google) API Key
+1. To get your Google OAuth Client ID for YouTube access:
+2. Go to the Google Cloud Console.
+3. Create a new project or select an existing one.
+4. Navigate to APIs & Services → Library.
+5. Search for YouTube Data API v3 and enable it.
+6. Go to APIs & Services → Credentials.
+7. Click “Create Credentials” → “OAuth 2.0 Client ID”.
+8. Choose Web Application and set your Authorized redirect URIs (e.g. http://localhost:3000).
+After creation, copy your Client ID and add it to your .env file:
+```bash
+VITE_GOOGLE_CLIENT_ID=your_google_client_id
 ```
 
 ## React + TypeScript + Vite + Bun
