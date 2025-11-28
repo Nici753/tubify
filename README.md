@@ -8,7 +8,7 @@ This project is intended for personal and educational use only. It is designed t
 
 ## next steps
 
-### adding YouTube
+### code improvements
 
 - [x] make helper function for deleting and updating playlists
 - [x] make a update playlist button
@@ -19,6 +19,8 @@ This project is intended for personal and educational use only. It is designed t
 - [x] handle quota exceeded on update playlist
 - [x] use Ref instead of document.getElementById
 - [x] fix redux error (doesn't cause any issues yet so it can wait) -> use zustand instead with indexedDB
+- [ ] fix spotify login
+- [ ] fix playlist export again after token refresh
 - [ ] use structured copy or functions that return an object instead of referencing it
 
 ### ui improvements
@@ -27,6 +29,9 @@ This project is intended for personal and educational use only. It is designed t
 - [x] make sidebar and component scrollable https://ui.shadcn.com/docs/components/scroll-area
 - [x] make modals scrollable https://ui.shadcn.com/docs/components/scroll-area
 - [ ] add toast notifications about import status
+- [ ] redesign top bar ... more specific logout functionalities and export button adjustment
+- [ ] round the corners more 
+- [ ] add searchbar to modals 
 - [ ] add loading spinner
 
 ## how to start
