@@ -29,7 +29,7 @@ This project is intended for personal and educational use only. It is designed t
 - [x] make sidebar and component scrollable https://ui.shadcn.com/docs/components/scroll-area
 - [x] make modals scrollable https://ui.shadcn.com/docs/components/scroll-area
 - [x] add toast notifications about import status
-- [ ] redesign top bar ... more specific logout functionalities and export button adjustment
+- [x] redesign top bar ... more specific logout functionalities and export button adjustment
 - [x] redesign logout 
 - [ ] add searchbar to modals 
 - [ ] add loading spinner

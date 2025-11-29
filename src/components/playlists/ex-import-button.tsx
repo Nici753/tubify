@@ -22,6 +22,7 @@ import {
 import { ScrollArea } from '../ui/scroll-area.tsx';
 import usePlaylistStore from '../../lib/store/playlist-store.ts';
 import playlistStore from '../../lib/store/playlist-store.ts';
+import useUserStore from '../../lib/store/user-store.ts';
 
 export function ExImportButton() {
   const spotifyApi = SpotifyAPIService.getInstance();
@@ -37,6 +38,14 @@ export function ExImportButton() {
   const [updateModal, setUpdateModal] = useState(false);
   const [exportModal, setExportModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+
+  const {
+    youtube_access_token,
+    spotify_access_token,
+  } = useUserStore();
+
+  const youtubeLoggedIn = !!youtube_access_token;
+  const spotifyLoggedIn = !!spotify_access_token;
 
   const importPlaylist = async (importedPlaylists: Playlist[]) => {
     const playlists: Playlist[] =
@@ -67,18 +76,18 @@ export function ExImportButton() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => importPlaylist(playlists)}>
+          {spotifyLoggedIn && <DropdownMenuItem onClick={() => importPlaylist(playlists)}>
             <Download className="mr-3" />
             Import
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setUpdateModal(true)}>
+          </DropdownMenuItem>}
+          {youtubeLoggedIn && <DropdownMenuItem onClick={() => setUpdateModal(true)}>
             <RefreshCw className="mr-3" />
             Update
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setExportModal(true)}>
+          </DropdownMenuItem>}
+          {youtubeLoggedIn && <DropdownMenuItem onClick={() => setExportModal(true)}>
             <Upload className="mr-3" />
             Export
-          </DropdownMenuItem>
+          </DropdownMenuItem>}
           <DropdownMenuItem onClick={() => setDeleteModal(true)}>
             <Trash2 className="mr-3" />
             Delete
