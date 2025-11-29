@@ -26,7 +26,7 @@ export function TopBar() {
         window.location.href = '/';
       }
     }
-  }, []);
+  }, [setSpotifyToken]);
 
   function getAccessTokenFromUrl(): string | null {
     const hash = window.location.hash
@@ -44,7 +44,7 @@ export function TopBar() {
   return (
     <div className="flex flex-row-reverse p-3 border-b-4">
       <ModeToggle />
-      {spotifyLoggedIn && youtubeLoggedIn && <ExImportButton />}
+      {(youtubeLoggedIn || spotifyLoggedIn) && <ExImportButton />}
       {!spotifyLoggedIn && <SpotifyLoginButton />}
       {!youtubeLoggedIn && <YoutubeLoginButton />}
       {(youtubeLoggedIn || spotifyLoggedIn) && <LogoutButton />}

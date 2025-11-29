@@ -15,6 +15,8 @@ interface UserState {
   setUserPicture: (picture: string) => void;
 
   clearUser: () => void;
+  clearSpotify: () => void;
+  clearYouTube: () => void;
 }
 
 const useUserStore = create<UserState>()(
@@ -35,6 +37,20 @@ const useUserStore = create<UserState>()(
       clearUser: () =>
         set({
           spotify_access_token: null,
+          youtube_access_token: null,
+          user_name: null,
+          user_email: null,
+          user_picture: null,
+        }),
+
+      clearSpotify: () =>
+        set({
+          spotify_access_token: null,
+
+        }),
+
+      clearYouTube: () =>
+        set({
           youtube_access_token: null,
           user_name: null,
           user_email: null,
