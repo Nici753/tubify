@@ -4,6 +4,7 @@ A simple music player built with React, TypeScript, Shadcn and Vite.
 Can transcribe your playlists from Spotify to YouTube.
 
 ## Disclaimer
+
 This project is intended for personal and educational use only. It is designed to demonstrate how to interact with the Spotify and YouTube APIs. You must use your own credentials and only access your own data. Do not use this app to copy, distribute, or manipulate copyrighted content. Any public or commercial use may violate the terms of service of Spotify and Google.
 
 ## next steps
@@ -30,8 +31,8 @@ This project is intended for personal and educational use only. It is designed t
 - [x] make modals scrollable https://ui.shadcn.com/docs/components/scroll-area
 - [x] add toast notifications about import status
 - [x] redesign top bar ... more specific logout functionalities and export button adjustment
-- [x] redesign logout 
-- [ ] add searchbar to modals 
+- [x] redesign logout
+- [ ] add searchbar to modals
 - [ ] add loading spinner
 
 ## how to start
@@ -42,14 +43,16 @@ add .env file with the following content:
 VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
 VITE_GOOGLE_CLIENT_ID=your_google_client_id
 ```
+
 then run the following commands:
+
 ```bash
 bun install
 bun dev
 ```
 
-
 ### Spotify API Key
+
 1. To get your Spotify Client ID:
 2. Go to the Spotify Developer Dashboard.
 3. Log in with your Spotify account.
@@ -58,12 +61,13 @@ bun dev
 6. After creation, you’ll see your Client ID and Client Secret.
 
 Add the Client ID to your .env file:
+
 ```bash
 VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
 ```
 
-
 ### YouTube (Google) API Key
+
 1. To get your Google OAuth Client ID for YouTube access:
 2. Go to the Google Cloud Console.
 3. Create a new project or select an existing one.
@@ -72,7 +76,8 @@ VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
 6. Go to APIs & Services → Credentials.
 7. Click “Create Credentials” → “OAuth 2.0 Client ID”.
 8. Choose Web Application and set your Authorized redirect URIs (e.g. http://localhost:3000).
-After creation, copy your Client ID and add it to your .env file:
+   After creation, copy your Client ID and add it to your .env file:
+
 ```bash
 VITE_GOOGLE_CLIENT_ID=your_google_client_id
 ```

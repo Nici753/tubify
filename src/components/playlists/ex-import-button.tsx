@@ -39,10 +39,7 @@ export function ExImportButton() {
   const [exportModal, setExportModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 
-  const {
-    youtube_access_token,
-    spotify_access_token,
-  } = useUserStore();
+  const { youtube_access_token, spotify_access_token } = useUserStore();
 
   const youtubeLoggedIn = !!youtube_access_token;
   const spotifyLoggedIn = !!spotify_access_token;
@@ -76,18 +73,24 @@ export function ExImportButton() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          {spotifyLoggedIn && <DropdownMenuItem onClick={() => importPlaylist(playlists)}>
-            <Download className="mr-3" />
-            Import
-          </DropdownMenuItem>}
-          {youtubeLoggedIn && <DropdownMenuItem onClick={() => setUpdateModal(true)}>
-            <RefreshCw className="mr-3" />
-            Update
-          </DropdownMenuItem>}
-          {youtubeLoggedIn && <DropdownMenuItem onClick={() => setExportModal(true)}>
-            <Upload className="mr-3" />
-            Export
-          </DropdownMenuItem>}
+          {spotifyLoggedIn && (
+            <DropdownMenuItem onClick={() => importPlaylist(playlists)}>
+              <Download className="mr-3" />
+              Import
+            </DropdownMenuItem>
+          )}
+          {youtubeLoggedIn && (
+            <DropdownMenuItem onClick={() => setUpdateModal(true)}>
+              <RefreshCw className="mr-3" />
+              Update
+            </DropdownMenuItem>
+          )}
+          {youtubeLoggedIn && (
+            <DropdownMenuItem onClick={() => setExportModal(true)}>
+              <Upload className="mr-3" />
+              Export
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem onClick={() => setDeleteModal(true)}>
             <Trash2 className="mr-3" />
             Delete

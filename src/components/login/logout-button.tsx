@@ -1,10 +1,14 @@
 import { Button } from '../ui/Button.tsx';
 import { LogOut } from 'lucide-react';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu.tsx';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu.tsx';
 import useUserStore from '../../lib/store/user-store.ts';
 
 export function LogoutButton() {
-
   const { clearUser, clearSpotify, clearYouTube } = useUserStore();
 
   function handleLogout() {
@@ -45,7 +49,6 @@ export function LogoutButton() {
             <LogOut className={'h-[1.2rem] w-[1.2rem] mr-1'} />
             Logout Spotify
           </DropdownMenuItem>
-
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

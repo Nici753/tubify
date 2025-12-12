@@ -16,11 +16,9 @@ export interface SpotifyAPIInterface {
 }
 
 export class SpotifyAPIService implements SpotifyAPIInterface {
-
   private static instance: SpotifyAPIService;
 
-  private constructor() {
-  }
+  private constructor() {}
 
   public static getInstance(): SpotifyAPIService {
     if (!SpotifyAPIService.instance) {
@@ -56,7 +54,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
         next: `${this.baseURL}/me/playlists`,
         items: [],
       };
-      // Handle Spotify pagination issues (last playlist is first on the next page)
+      // Handle Spotify pagination issues (the last playlist is first on the next page)
       const spotifyPlaylistIds: string[] = [];
       for (const playlist of importedPlaylists) {
         spotifyPlaylistIds.push(playlist.SpotifyId);
@@ -87,14 +85,16 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
       let numberOfImportedPlaylists = 0;
 
       toast.info('Importing Playlists', {
-        description: numberOfImportedPlaylists + ' of ' + numberOfPlaylistsToImport,
+        description:
+          numberOfImportedPlaylists + ' of ' + numberOfPlaylistsToImport,
       });
       for (const playlist of playlists) {
         await this.delay(1000);
         playlist.tracks = await this.getPlaylistItems(playlist.SpotifyId);
         numberOfImportedPlaylists++;
         toast.info('Importing Playlists', {
-          description: numberOfImportedPlaylists + ' of ' + numberOfPlaylistsToImport,
+          description:
+            numberOfImportedPlaylists + ' of ' + numberOfPlaylistsToImport,
         });
         if (numberOfImportedPlaylists === numberOfPlaylistsToImport) {
           toast.success('Importing Playlists', {
@@ -107,7 +107,8 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
     } catch (error) {
       console.error('Error fetching user playlists:', error);
       toast.error('Error fetching user playlists:', {
-        description: error.message,
+        description:
+          error instanceof Error ? error.message : 'Failed to fetch playlists',
       });
       return [] as Playlist[];
     }

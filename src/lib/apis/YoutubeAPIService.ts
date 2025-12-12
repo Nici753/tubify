@@ -3,8 +3,7 @@ import { Track, YouTubeTrackResponse } from '../types/Track.ts';
 import useUserStore from '../store/user-store.ts';
 import { toast } from 'sonner';
 
-export interface YoutubeAPIInterface {
-}
+export interface YoutubeAPIInterface {}
 
 type YoutubePostRequest = {
   snippet: {
@@ -35,8 +34,7 @@ type YoutubePlaylistResponse = {
 export class YoutubeAPIService implements YoutubeAPIInterface {
   private static instance: YoutubeAPIService;
 
-  private constructor() {
-  }
+  private constructor() {}
 
   public static getInstance(): YoutubeAPIService {
     if (!YoutubeAPIService.instance) {
@@ -93,12 +91,11 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     } catch (e) {
       console.error(
         'Failed to search for track on Youtube: ' +
-        track.name +
-        ', Error: ' +
-        e,
+          track.name +
+          ', Error: ' +
+          e,
       );
-      toast.error('Failed to search for track on Youtube: ' +
-        track.name, {
+      toast.error('Failed to search for track on Youtube: ' + track.name, {
         description: e.message,
       });
     }
@@ -131,7 +128,8 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     if (!newPlaylist.tracks?.every(hasId)) {
       console.error('Not all songs have a YoutubeId');
       toast.error('Cannot export this Playlist', {
-        description: 'Not all songs have a YoutubeId! Please update playlist first.',
+        description:
+          'Not all songs have a YoutubeId! Please update playlist first.',
       });
       return newPlaylist;
     }
@@ -149,7 +147,7 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
 
       const data: { id: string } = await response.json();
       newPlaylist.YoutubeId = data.id;
-      toast.info('Created new playlist on YouTube')
+      toast.info('Created new playlist on YouTube');
     }
     // Gard clause: Playlist already exists on YouTube -> get all songs in playlist and remove them from songs to export
     if (!isNewYoutubePlaylist) {
@@ -173,8 +171,7 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
 
     if (!playlistHasId(newPlaylist)) {
       console.error('Playlist has no YouTubeId');
-      toast.error('Playlist has no YouTubeId', {
-      });
+      toast.error('Playlist has no YouTubeId', {});
       return newPlaylist;
     }
     toast.info('Adding songs to YouTube playlist');
@@ -193,14 +190,16 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
       } catch (e) {
         console.error(
           'Failed to add song to YouTube playlist: ' +
-          song.YoutubeId +
-          ', Error: ' +
-          e,
+            song.YoutubeId +
+            ', Error: ' +
+            e,
         );
-        toast.error('Failed to add song to YouTube playlist: ' +
-          song.YoutubeId, {
-          description: e.message,
-        });
+        toast.error(
+          'Failed to add song to YouTube playlist: ' + song.YoutubeId,
+          {
+            description: e.message,
+          },
+        );
       }
     }
     toast.success('Playlists export finished');

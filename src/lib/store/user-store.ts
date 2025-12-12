@@ -46,7 +46,6 @@ const useUserStore = create<UserState>()(
       clearSpotify: () =>
         set({
           spotify_access_token: null,
-
         }),
 
       clearYouTube: () =>
