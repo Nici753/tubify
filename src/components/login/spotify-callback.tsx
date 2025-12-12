@@ -6,7 +6,11 @@ import useUserStore from '../../lib/store/user-store.ts';
 export function SpotifyCallback() {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
-  const { setSpotifyToken } = useUserStore();
+  const {
+    setSpotifyToken,
+    setSpotifyRefreshToken,
+    setSpotifyTokenExpiry,
+  } = useUserStore();
 
   useEffect(() => {
     async function handleCallback() {
@@ -45,21 +49,22 @@ export function SpotifyCallback() {
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(
-            errorData.error_description || 'Failed to get access token',
-          );
+          throw new Error(errorData.error_description || 'Failed to get access token');
         }
 
         const data = await response.json();
 
         // Store tokens
+        /* session storage example
         sessionStorage.setItem('spotify_access_token', data.access_token);
         sessionStorage.setItem('spotify_refresh_token', data.refresh_token);
-        sessionStorage.setItem(
-          'spotify_token_expiry',
-          String(Date.now() + data.expires_in * 1000),
+        sessionStorage.setItem('spotify_token_expiry',
+          String(Date.now() + data.expires_in * 1000)
         );
+        */
         setSpotifyToken(data.access_token);
+        setSpotifyRefreshToken(data.refresh_token);
+        setSpotifyTokenExpiry(String(Date.now() + data.expires_in * 1000));
 
         // Clean up
         sessionStorage.removeItem('spotify_code_verifier');
@@ -80,16 +85,9 @@ export function SpotifyCallback() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <h2 className="text-xl font-bold text-red-600 mb-2">
-            Authentication Error
-          </h2>
+          <h2 className="text-xl font-bold text-red-600 mb-2">Authentication Error</h2>
           <p className="text-gray-600">{error}</p>
-          <Button
-            variant="outline"
-            onClick={() => (window.location.href = '/')}
-          >
-            Back to main page
-          </Button>
+          <Button variant="outline" onClick={() => window.location.href = '/'}>Back to main page</Button>
         </div>
       </div>
     );
