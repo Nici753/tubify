@@ -20,9 +20,13 @@ This project is intended for personal and educational use only. It is designed t
 - [x] handle quota exceeded on update playlist
 - [x] use Ref instead of document.getElementById
 - [x] fix redux error (doesn't cause any issues yet so it can wait) -> use zustand instead with indexedDB
-- [ ] fix spotify login
-- [ ] fix playlist export again after token refresh
-- [ ] use structured copy or functions that return an object instead of referencing it
+- [x] fix Spotify login
+- [x] fix playlist export again after token refresh
+- [x] use structured copy or functions that return an object instead of referencing it
+- [ ] implement search function
+- [ ] add search function to sidebar and modals
+- [ ] implement and add an edit playlist attributes modal
+- [ ] write unit tests for both APIs
 
 ### ui improvements
 
@@ -33,6 +37,7 @@ This project is intended for personal and educational use only. It is designed t
 - [x] redesign top bar ... more specific logout functionalities and export button adjustment
 - [x] redesign logout
 - [ ] add searchbar to modals
+- [ ] write some playwright tests
 - [ ] add loading spinner
 
 ## how to start
