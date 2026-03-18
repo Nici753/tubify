@@ -117,3 +117,16 @@ export default {
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+## Some Hints
+### How I like to debug:
+
+1. Set up a new JavaScriptDebug Configuration
+2. In this Case set the URL to http://127.0.0.1:5173/
+3. Start the program
+   ```bash
+   bun run dev
+   ```
+4. Log in and copy the login data from local storage
+5. Start the debug configuration
+6. Paste the login data to local storage (we do this cause it is tricky to log into YouTube over the debugging browser)
