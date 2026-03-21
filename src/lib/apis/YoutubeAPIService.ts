@@ -174,6 +174,7 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     toast.info('Created new playlist on YouTube');
 
     toast.info('Adding songs to YouTube playlist');
+    newPlaylist.YoutubeId = data.id;
     await this.exportTracks(newPlaylist);
 
     return data.id;
