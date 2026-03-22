@@ -39,6 +39,8 @@ This project is intended for personal and educational use only. It is designed t
 - [ ] add searchbar to modals
 - [ ] write some playwright tests
 - [ ] add loading spinner
+- [ ] add progress bar
+- [ ] add skeleton
 
 ## how to start
 
