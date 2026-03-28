@@ -77,7 +77,7 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
 
   async searchSongOnYoutube(track: Track): Promise<Track> {
     const query: string = `${track.name} ${track.artists.join(', ')}`;
-    const search_url: string = `?part=snippet&maxResults=1&q=${query}`;
+    const search_url: string = `?part=snippet&maxResults=1&type=video&q=${query}`;
 
     try {
       const response: Response = await this.youtubeGetRequest(
