@@ -22,6 +22,7 @@ type YoutubePlaylistPostUpdateTitle = {
 };
 
 type YoutubePlaylistResponse = {
+  nextPageToken: string | undefined;
   items: {
     snippet: {
       resourceId: {
@@ -142,22 +143,44 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     return newPlaylist;
   }
 
-  private async addingMissingSongsToPlaylist(newPlaylist: Playlist): Promise<void> {
+    private async addingMissingSongsToPlaylist(newPlaylist: Playlist): Promise<void> {
     const stillMissingTracks: Playlist = structuredClone(newPlaylist);
-    const response: Response = await this.youtubeGetRequest(
-      `/playlistItems?part=snippet&playlistId=${newPlaylist.YoutubeId}`,
-    );
-    const data: YoutubePlaylistResponse = await response.json();
-    const songsInPlaylist: Array<string> = data.items.map(
-      (item) => item.snippet.resourceId.videoId,
-    );
 
+    // Create a set to store ALL video IDs found in the YouTube playlist
+    const songsInPlaylist = new Set<string>();
+    let nextPageToken: string | undefined = undefined;
+
+    // Loop until there are no more pages
+    do {
+      // Construct the URL with the pageToken if we have one
+      const pageParam : string = nextPageToken ? `&pageToken=${nextPageToken}` : '';
+      const endpoint = `/playlistItems?part=snippet&playlistId=${newPlaylist.YoutubeId}&maxResults=50${pageParam}`;
+
+      const response: Response = await this.youtubeGetRequest(endpoint);
+      const data: YoutubePlaylistResponse = await response.json();
+
+      // Add this page's items to our collection
+      data.items.forEach((item) => {
+        songsInPlaylist.add(item.snippet.resourceId.videoId);
+      });
+
+      // Update the token for the next iteration
+      nextPageToken = data.nextPageToken;
+
+    } while (nextPageToken); // If this is undefined/null, the loop stops
+
+    // Filter the local tracks
     stillMissingTracks.tracks = (stillMissingTracks.tracks ?? [])
       .filter((song) => song.YoutubeId !== undefined)
-      .filter((song) => !songsInPlaylist.includes(song.YoutubeId!));
+      .filter((song) => !songsInPlaylist.has(song.YoutubeId!));
 
-    toast.info('Adding songs to YouTube playlist');
-    await this.exportTracks(stillMissingTracks);
+    // Export only if there's actually something new to add
+    if (stillMissingTracks.tracks.length > 0) {
+      toast.info(`Adding ${stillMissingTracks.tracks.length} new songs to YouTube playlist`);
+      await this.exportTracks(stillMissingTracks);
+    } else {
+      toast.success('Playlist is already up to date!');
+    }
   }
 
   private async exportNewPlaylist(newPlaylist: Playlist): Promise<string> {
