@@ -23,7 +23,7 @@ This project is intended for personal and educational use only. It is designed t
 - [x] fix Spotify login
 - [x] fix playlist export again after token refresh
 - [x] use structured copy or functions that return an object instead of referencing it
-- [ ] add a test mode (a button that test logs you in and adds some mock data just to see the app)
+- [x] add a test mode (a button that test logs you in and adds some mock data just to see the app)
 - [ ] implement search function
 - [ ] add search function to sidebar and modals
 - [ ] implement and add an edit playlist attributes modal
@@ -37,7 +37,7 @@ This project is intended for personal and educational use only. It is designed t
 - [x] add toast notifications about import status
 - [x] redesign top bar ... more specific logout functionalities and export button adjustment
 - [x] redesign logout
-- [ ] add a test mode (a button that test logs you in and adds some mock data just to see the app)
+- [x] add a test mode (a button that test logs you in and adds some mock data just to see the app)
 - [ ] add searchbar to modals
 - [ ] write some playwright tests
 - [ ] add loading spinner

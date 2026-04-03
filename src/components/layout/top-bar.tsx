@@ -4,6 +4,7 @@ import { SpotifyLoginButton } from '../login/spotify-login-button.tsx';
 import { LogoutButton } from '../login/logout-button.tsx';
 import { NameTag } from './name-tag.tsx';
 import { ExImportButton } from '../playlists/ex-import-button.tsx';
+import { MockButton } from './mock-button.tsx'
 import useUserStore from '../../lib/store/user-store.ts'; // Import Zustand store
 
 export function TopBar() {
@@ -20,6 +21,7 @@ export function TopBar() {
       {!spotifyLoggedIn && <SpotifyLoginButton />}
       {!youtubeLoggedIn && <YoutubeLoginButton />}
       {(youtubeLoggedIn || spotifyLoggedIn) && <LogoutButton />}
+      {!(youtubeLoggedIn || spotifyLoggedIn) && <MockButton />}
       <div className="flex-auto content-center">{user_name && <NameTag />}</div>
     </div>
   );
