@@ -15,7 +15,7 @@ export function TopBar() {
   const spotifyLoggedIn = !!spotify_access_token;
 
   return (
-    <div className="flex flex-row-reverse p-3 border-b-4">
+    <div className="flex flex-row-reverse items-center p-3 border-b-4">
       <ModeToggle />
       {(youtubeLoggedIn || spotifyLoggedIn) && <ExImportButton />}
       {!spotifyLoggedIn && <SpotifyLoginButton />}
