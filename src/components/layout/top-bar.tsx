@@ -11,8 +11,8 @@ export function TopBar() {
   const { youtube_access_token, spotify_access_token, user_name } =
     useUserStore();
 
-  const youtubeLoggedIn = !!youtube_access_token;
-  const spotifyLoggedIn = !!spotify_access_token;
+  const youtubeLoggedIn :boolean = !!youtube_access_token;
+  const spotifyLoggedIn :boolean = !!spotify_access_token;
 
   return (
     <div className="flex flex-row-reverse items-center p-3 border-b-4">

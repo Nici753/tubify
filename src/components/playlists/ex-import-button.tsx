@@ -4,7 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu.tsx';
-import { Button } from '../ui/Button.tsx';
+import { Button } from '../ui/button.tsx';
 import { Folder, Download, Upload, Trash2, RefreshCw } from 'lucide-react';
 import { SpotifyAPIService } from '../../lib/apis/SpotifyAPIService.ts';
 import { Playlist, PlaylistState } from '../../lib/types/Playlist.ts';

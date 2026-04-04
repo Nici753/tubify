@@ -1,4 +1,4 @@
-import { Button } from '../ui/Button.tsx';
+import { Button } from '../ui/button.tsx';
 
 export function MockButton() {
   // not using zustand or stores here for simplicity
