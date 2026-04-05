@@ -2,16 +2,24 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from '../ui/input-group.tsx'
+} from '../ui/input-group.tsx';
 import { SearchIcon } from 'lucide-react';
 
-export function Searchbar() {
+// Define the interface for props
+interface SearchbarProps {
+  value: string;
+  onChange: (val: string) => void;
+}
 
+export function Searchbar({ value, onChange }: SearchbarProps) {
   return (
-    <InputGroup >
-      <InputGroupInput placeholder="Search..." />
+    <InputGroup>
+      <InputGroupInput
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
       <InputGroupAddon>
-        <SearchIcon />
+        <SearchIcon size={18} className="text-muted-foreground" />
       </InputGroupAddon>
     </InputGroup>
   );
