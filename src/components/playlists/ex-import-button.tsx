@@ -23,10 +23,11 @@ import { ScrollArea } from '../ui/scroll-area.tsx';
 import usePlaylistStore from '../../lib/store/playlist-store.ts';
 import playlistStore from '../../lib/store/playlist-store.ts';
 import useUserStore from '../../lib/store/user-store.ts';
+import { Searchbar } from './searchbar.tsx';
 
 export function ExImportButton() {
-  const spotifyApi = SpotifyAPIService.getInstance();
-  const youtubeApi = YoutubeAPIService.getInstance();
+  const spotifyApi: SpotifyAPIService = SpotifyAPIService.getInstance();
+  const youtubeApi: YoutubeAPIService = YoutubeAPIService.getInstance();
   const {
     addPlaylist,
     updatePlaylist,
@@ -38,16 +39,18 @@ export function ExImportButton() {
   const [updateModal, setUpdateModal] = useState(false);
   const [exportModal, setExportModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [updateSearchQuery, setUpdateSearchQuery] = useState('');
+  const [exportSearchQuery, setExportSearchQuery] = useState('');
 
   const { youtube_access_token, spotify_access_token } = useUserStore();
 
-  const youtubeLoggedIn = !!youtube_access_token;
-  const spotifyLoggedIn = !!spotify_access_token;
+  const youtubeLoggedIn: boolean = !!youtube_access_token;
+  const spotifyLoggedIn: boolean = !!spotify_access_token;
 
   const importPlaylist = async (importedPlaylists: Playlist[]) => {
     const playlists: Playlist[] =
       await spotifyApi.importPlaylist(importedPlaylists);
-    playlists.forEach((playlist) => {
+    playlists.forEach((playlist: Playlist): void => {
       addPlaylist(playlist);
     });
   };
@@ -62,8 +65,17 @@ export function ExImportButton() {
     updatePlaylist(await youtubeApi.updatePlaylist(playlistToUpdate));
   }
 
-  const selectedPlaylist = usePlaylistStore((state) => state.selectedPlaylist);
-  const playlists = playlistStore((state: PlaylistState) => state.playlists);
+  const selectedPlaylist: Playlist | null = usePlaylistStore((state) => state.selectedPlaylist);
+  const playlists: Playlist[] = playlistStore((state: PlaylistState) => state.playlists);
+
+  const filteredUpdatePlaylists: Playlist[] = playlists.filter((playlist) =>
+    playlist.name.toLowerCase().includes(updateSearchQuery.toLowerCase()),
+  );
+
+  const filteredExportPlaylists: Playlist[] = playlists.filter((playlist) =>
+    playlist.name.toLowerCase().includes(exportSearchQuery.toLowerCase()),
+  );
+
   return (
     <>
       <DropdownMenu>
@@ -74,24 +86,24 @@ export function ExImportButton() {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           {spotifyLoggedIn && (
-            <DropdownMenuItem onClick={() => importPlaylist(playlists)}>
+            <DropdownMenuItem onClick={(): Promise<void> => importPlaylist(playlists)}>
               <Download className="mr-3" />
               Import
             </DropdownMenuItem>
           )}
           {youtubeLoggedIn && (
-            <DropdownMenuItem onClick={() => setUpdateModal(true)}>
+            <DropdownMenuItem onClick={(): void => setUpdateModal(true)}>
               <RefreshCw className="mr-3" />
               Update
             </DropdownMenuItem>
           )}
           {youtubeLoggedIn && (
-            <DropdownMenuItem onClick={() => setExportModal(true)}>
+            <DropdownMenuItem onClick={(): void => setExportModal(true)}>
               <Upload className="mr-3" />
               Export
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem onClick={() => setDeleteModal(true)}>
+          <DropdownMenuItem onClick={(): void => setDeleteModal(true)}>
             <Trash2 className="mr-3" />
             Delete
           </DropdownMenuItem>
@@ -99,43 +111,50 @@ export function ExImportButton() {
       </DropdownMenu>
       {updateModal &&
         createPortal(
-          <Card
-            className={
-              'inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950'
-            }
-          >
+          <Card className="inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950">
             <CardHeader>
               <CardTitle>Update Playlists</CardTitle>
               <CardDescription>
                 Choose a playlist to add song equivalents from YouTube
               </CardDescription>
+              <div className="pt-2">
+                <Searchbar
+                  value={updateSearchQuery}
+                  onChange={setUpdateSearchQuery}
+                />
+              </div>
             </CardHeader>
-            <CardContent className={'flex flex-col h-fit'}>
-              <ScrollArea className={'h-64 w-full pr-4'}>
-                <div className={'flex flex-col gap-2'}>
-                  {playlists.map((playlist) => (
-                    <div
-                      key={playlist.SpotifyId}
-                      className={
-                        'flex items-center space-x-2 p-1 cursor-pointer'
-                      }
-                      onClick={() => updatePlaylistWithYoutubeSongs(playlist)}
-                    >
-                      <img
-                        src={playlist.imageUrl}
-                        alt={playlist.name}
-                        className={'w-12 h-12 rounded'}
-                      />
-                      <span className={'flex-grow text-left truncate'}>
-                        {playlist.name}
-                      </span>
-                    </div>
-                  ))}
+            <CardContent className="flex flex-col h-fit">
+              <ScrollArea className="h-64 w-full pr-4">
+                <div className="flex flex-col gap-2">
+                  {filteredUpdatePlaylists.length > 0 ? (
+                    filteredUpdatePlaylists.map((playlist: Playlist) => (
+                      <div
+                        key={playlist.SpotifyId}
+                        className="flex items-center space-x-2 p-1 cursor-pointer hover:bg-accent rounded"
+                        onClick={(): Promise<void> => updatePlaylistWithYoutubeSongs(playlist)}
+                      >
+                        <img
+                          src={playlist.imageUrl}
+                          alt={playlist.name}
+                          className="w-12 h-12 rounded"
+                        />
+                        <span className="flex-grow text-left truncate">
+                          {playlist.name}
+                        </span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-center text-muted-foreground py-10">No playlists found.</p>
+                  )}
                 </div>
               </ScrollArea>
             </CardContent>
             <CardFooter className="flex flex-row-reverse">
-              <Button variant="outline" onClick={() => setUpdateModal(false)}>
+              <Button variant="outline" onClick={(): void => {
+                setUpdateModal(false);
+                setUpdateSearchQuery(''); // Reset search on close
+              }}>
                 Cancel
               </Button>
             </CardFooter>
@@ -144,43 +163,52 @@ export function ExImportButton() {
         )}
       {exportModal &&
         createPortal(
-          <Card
-            className={
-              'inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950'
-            }
-          >
+          <Card className="inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950">
             <CardHeader>
               <CardTitle>Export Playlists</CardTitle>
               <CardDescription>
                 Choose a playlist to export to YouTube
               </CardDescription>
+              <div className="pt-2">
+                <Searchbar
+                  value={exportSearchQuery}
+                  onChange={setExportSearchQuery}
+                />
+              </div>
             </CardHeader>
-            <CardContent className={'flex flex-col h-fit'}>
-              <ScrollArea className={'h-64 w-full pr-4'}>
-                <div className={'flex flex-col gap-2'}>
-                  {playlists.map((playlist: Playlist) => (
-                    <div
-                      key={playlist.SpotifyId}
-                      className={
-                        'flex items-center space-x-2 p-1 cursor-pointer'
-                      }
-                      onClick={() => exportPlaylist(playlist)}
-                    >
-                      <img
-                        src={playlist.imageUrl}
-                        alt={playlist.name}
-                        className={'w-12 h-12 rounded'}
-                      />
-                      <span className={'flex-grow text-left truncate'}>
-                        {playlist.name}
-                      </span>
-                    </div>
-                  ))}
+            <CardContent className="flex flex-col h-fit">
+              <ScrollArea className="h-64 w-full pr-4">
+                <div className="flex flex-col gap-2">
+                  {filteredExportPlaylists.length > 0 ? (
+                    filteredExportPlaylists.map((playlist: Playlist) => (
+                      <div
+                        key={playlist.SpotifyId}
+                        className="flex items-center space-x-2 p-1 cursor-pointer hover:bg-accent rounded"
+                        onClick={(): Promise<void> => exportPlaylist(playlist)}
+                      >
+                        <img
+                          src={playlist.imageUrl}
+                          alt={playlist.name}
+                          className="w-12 h-12 rounded"
+                        />
+                        <span className="flex-grow text-left truncate">
+                    {playlist.name}
+                  </span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-center text-muted-foreground py-10 text-sm">
+                      No matches found.
+                    </p>
+                  )}
                 </div>
               </ScrollArea>
             </CardContent>
             <CardFooter className="flex flex-row-reverse">
-              <Button variant="outline" onClick={() => setExportModal(false)}>
+              <Button variant="outline" onClick={(): void => {
+                setExportModal(false);
+                setExportSearchQuery(''); // Reset search on close
+              }}>
                 Cancel
               </Button>
             </CardFooter>
@@ -206,7 +234,7 @@ export function ExImportButton() {
                   <Button
                     variant="outline"
                     className="w-full"
-                    onClick={() => {
+                    onClick={(): void => {
                       removePlaylist(selectedPlaylist.SpotifyId);
                       unselectPlaylist();
                       setDeleteModal(false);
@@ -218,7 +246,7 @@ export function ExImportButton() {
                 <Button
                   variant="outline"
                   className="w-full"
-                  onClick={() => {
+                  onClick={(): void => {
                     clearPlaylists();
                     setDeleteModal(false);
                   }}
@@ -228,7 +256,7 @@ export function ExImportButton() {
               </div>
             </CardContent>
             <CardFooter className="flex flex-row-reverse">
-              <Button variant="outline" onClick={() => setDeleteModal(false)}>
+              <Button variant="outline" onClick={(): void => setDeleteModal(false)}>
                 Cancel
               </Button>
             </CardFooter>
