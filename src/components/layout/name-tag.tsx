@@ -6,9 +6,9 @@ export function NameTag() {
     <div className={'flex flex-row content-center'}>
       {user_picture && (
         <img
-          className="h-12 px-2 py-2 object-cover rounded-lg"
+          className={'h-12 px-2 py-2 object-cover rounded-xl'}
           src={user_picture}
-          alt="Profile picture"
+          alt={'Profile picture'}
         />
       )}
       <p className={'text-lg content-center'}>Welcome {user_name}</p>
