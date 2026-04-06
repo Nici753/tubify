@@ -39,7 +39,7 @@ export function Content() {
     const query: string = songSearchQuery.toLowerCase();
     return selectedPlaylist.tracks.filter((song: Track): boolean =>
       song.name.toLowerCase().includes(query) ||
-      song.artists?.some(artist => artist.toLowerCase().includes(query))
+      song.artists?.some(artist => artist.toLowerCase().includes(query)),
     );
   }, [selectedPlaylist, songSearchQuery]);
   if (!selectedPlaylist) {
@@ -56,12 +56,11 @@ export function Content() {
           {selectedPlaylist.name}
         </h1>
         <div className={'flex flex-row-reverse'}>
-          <div>
           <Searchbar
+            className={'w-2/5'}
             value={songSearchQuery}
             onChange={setSongSearchQuery}
           />
-          </div>
         </div>
       </div>
       <ScrollArea className={'h-full w-full'}>
@@ -97,7 +96,7 @@ export function Content() {
             ))
           ) : (
             <div className={'text-center py-20 text-muted-foreground'}>
-              {songSearchQuery ? `No songs found matching "${songSearchQuery}"` : "This playlist is empty."}
+              {songSearchQuery ? `No songs found matching "${songSearchQuery}"` : 'This playlist is empty.'}
             </div>
           )}
         </div>

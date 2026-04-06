@@ -9,11 +9,12 @@ import { SearchIcon } from 'lucide-react';
 interface SearchbarProps {
   value: string;
   onChange: (val: string) => void;
+  className?: string;
 }
 
-export function Searchbar({ value, onChange }: SearchbarProps) {
+export function Searchbar({ value, onChange, className }: SearchbarProps) {
   return (
-    <InputGroup>
+    <InputGroup className={className}>
       <InputGroupInput
         value={value}
         onChange={(e) => onChange(e.target.value)}

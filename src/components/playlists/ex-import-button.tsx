@@ -80,78 +80,79 @@ export function ExImportButton() {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger className={'mr-3'} asChild>
-          <Button variant="outline" size="icon">
+          <Button variant={'outline'} size={'icon'}>
             <Folder />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           {spotifyLoggedIn && (
             <DropdownMenuItem onClick={(): Promise<void> => importPlaylist(playlists)}>
-              <Download className="mr-3" />
+              <Download className={'mr-3'} />
               Import
             </DropdownMenuItem>
           )}
           {youtubeLoggedIn && (
             <DropdownMenuItem onClick={(): void => setUpdateModal(true)}>
-              <RefreshCw className="mr-3" />
+              <RefreshCw className={'mr-3'} />
               Update
             </DropdownMenuItem>
           )}
           {youtubeLoggedIn && (
             <DropdownMenuItem onClick={(): void => setExportModal(true)}>
-              <Upload className="mr-3" />
+              <Upload className={'mr-3'} />
               Export
             </DropdownMenuItem>
           )}
           <DropdownMenuItem onClick={(): void => setDeleteModal(true)}>
-            <Trash2 className="mr-3" />
+            <Trash2 className={'mr-3'} />
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       {updateModal &&
         createPortal(
-          <Card className="inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950">
-            <CardHeader>
+          <Card
+            className={'inset-x-1/4 top-[20vh] h-[60vh] flex flex-col absolute z-50 border-4 shadow-md shadow-neutral-950'}>
+            <CardHeader className={'shrink-0'}>
               <CardTitle>Update Playlists</CardTitle>
               <CardDescription>
                 Choose a playlist to add song equivalents from YouTube
               </CardDescription>
-              <div className="pt-2">
+              <div className={'pt-2'}>
                 <Searchbar
                   value={updateSearchQuery}
                   onChange={setUpdateSearchQuery}
                 />
               </div>
             </CardHeader>
-            <CardContent className="flex flex-col h-fit">
-              <ScrollArea className="h-64 w-full pr-4">
-                <div className="flex flex-col gap-2">
+            <CardContent className={'flex-1 overflow-hidden p-0 px-6'}>
+              <ScrollArea className={'h-full w-full pr-4'}>
+                <div className={'flex flex-col gap-2 pb-6'}>
                   {filteredUpdatePlaylists.length > 0 ? (
                     filteredUpdatePlaylists.map((playlist: Playlist) => (
                       <div
                         key={playlist.SpotifyId}
-                        className="flex items-center space-x-2 p-1 cursor-pointer hover:bg-accent rounded"
+                        className={'flex items-center space-x-2 p-1 cursor-pointer hover:bg-accent rounded'}
                         onClick={(): Promise<void> => updatePlaylistWithYoutubeSongs(playlist)}
                       >
                         <img
                           src={playlist.imageUrl}
                           alt={playlist.name}
-                          className="w-12 h-12 rounded"
+                          className={'w-12 h-12 rounded'}
                         />
-                        <span className="flex-grow text-left truncate">
-                          {playlist.name}
-                        </span>
+                        <span className={'flex-grow text-left truncate'}>
+                    {playlist.name}
+                  </span>
                       </div>
                     ))
                   ) : (
-                    <p className="text-center text-muted-foreground py-10">No playlists found.</p>
+                    <p className={'text-center text-muted-foreground py-10'}>No playlists found.</p>
                   )}
                 </div>
               </ScrollArea>
             </CardContent>
-            <CardFooter className="flex flex-row-reverse">
-              <Button variant="outline" onClick={(): void => {
+            <CardFooter className={'flex flex-row-reverse shrink-0 pt-4'}>
+              <Button variant={'outline'} onClick={(): void => {
                 setUpdateModal(false);
                 setUpdateSearchQuery(''); // Reset search on close
               }}>
@@ -163,49 +164,50 @@ export function ExImportButton() {
         )}
       {exportModal &&
         createPortal(
-          <Card className="inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950">
-            <CardHeader>
+          <Card
+            className={'inset-x-1/4 top-[20vh] h-[60vh] flex flex-col absolute z-50 border-4 shadow-md shadow-neutral-950'}>
+            <CardHeader className={'shrink-0'}>
               <CardTitle>Export Playlists</CardTitle>
               <CardDescription>
                 Choose a playlist to export to YouTube
               </CardDescription>
-              <div className="pt-2">
+              <div className={'pt-2'}>
                 <Searchbar
                   value={exportSearchQuery}
                   onChange={setExportSearchQuery}
                 />
               </div>
             </CardHeader>
-            <CardContent className="flex flex-col h-fit">
-              <ScrollArea className="h-64 w-full pr-4">
-                <div className="flex flex-col gap-2">
+            <CardContent className={'flex-1 overflow-hidden p-0 px-6'}>
+              <ScrollArea className={'h-full w-full pr-4'}>
+                <div className={'flex flex-col gap-2 pb-6'}>
                   {filteredExportPlaylists.length > 0 ? (
                     filteredExportPlaylists.map((playlist: Playlist) => (
                       <div
                         key={playlist.SpotifyId}
-                        className="flex items-center space-x-2 p-1 cursor-pointer hover:bg-accent rounded"
+                        className={'flex items-center space-x-2 p-1 cursor-pointer hover:bg-accent rounded'}
                         onClick={(): Promise<void> => exportPlaylist(playlist)}
                       >
                         <img
                           src={playlist.imageUrl}
                           alt={playlist.name}
-                          className="w-12 h-12 rounded"
+                          className={'w-12 h-12 rounded'}
                         />
-                        <span className="flex-grow text-left truncate">
+                        <span className={'flex-grow text-left truncate'}>
                     {playlist.name}
                   </span>
                       </div>
                     ))
                   ) : (
-                    <p className="text-center text-muted-foreground py-10 text-sm">
+                    <p className={'text-center text-muted-foreground py-10 text-sm'}>
                       No matches found.
                     </p>
                   )}
                 </div>
               </ScrollArea>
             </CardContent>
-            <CardFooter className="flex flex-row-reverse">
-              <Button variant="outline" onClick={(): void => {
+            <CardFooter className={'flex flex-row-reverse shrink-0 pt-4'}>
+              <Button variant={'outline'} onClick={(): void => {
                 setExportModal(false);
                 setExportSearchQuery(''); // Reset search on close
               }}>
@@ -218,10 +220,7 @@ export function ExImportButton() {
       {deleteModal &&
         createPortal(
           <Card
-            className={
-              'inset-x-1/4 top-1/4 absolute z-50 border-4 shadow-md shadow-neutral-950'
-            }
-          >
+            className={'inset-x-1/4 top-[40vh] h-[20vh] absolute z-50 border-4 shadow-md shadow-neutral-950'}>
             <CardHeader>
               <CardTitle>Delete Playlists Locally</CardTitle>
               <CardDescription>
@@ -229,11 +228,11 @@ export function ExImportButton() {
               </CardDescription>
             </CardHeader>
             <CardContent className={'flex flex-row gap-2 h-fit'}>
-              <div className="grid grid-cols-2 gap-2 w-full">
+              <div className={'grid grid-cols-2 gap-2 w-full'}>
                 {selectedPlaylist && selectedPlaylist.SpotifyId && (
                   <Button
-                    variant="outline"
-                    className="w-full"
+                    variant={'outline'}
+                    className={'w-full'}
                     onClick={(): void => {
                       removePlaylist(selectedPlaylist.SpotifyId);
                       unselectPlaylist();
@@ -244,8 +243,8 @@ export function ExImportButton() {
                   </Button>
                 )}
                 <Button
-                  variant="outline"
-                  className="w-full"
+                  variant={'outline'}
+                  className={'w-full'}
                   onClick={(): void => {
                     clearPlaylists();
                     setDeleteModal(false);
@@ -255,8 +254,8 @@ export function ExImportButton() {
                 </Button>
               </div>
             </CardContent>
-            <CardFooter className="flex flex-row-reverse">
-              <Button variant="outline" onClick={(): void => setDeleteModal(false)}>
+            <CardFooter className={'flex flex-row-reverse'}>
+              <Button variant={'outline'} onClick={(): void => setDeleteModal(false)}>
                 Cancel
               </Button>
             </CardFooter>
