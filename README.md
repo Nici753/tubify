@@ -39,6 +39,7 @@ This project is intended for personal and educational use only. It is designed t
 - [x] redesign logout
 - [x] add a test mode (a button that test logs you in and adds some mock data just to see the app)
 - [x] add searchbar to modals
+- [ ] improve toasts
 - [ ] write some playwright tests
 - [ ] add loading spinner
 - [ ] add progress bar

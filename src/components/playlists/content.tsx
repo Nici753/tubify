@@ -51,7 +51,7 @@ export function Content() {
       className={'flex flex-col h-full w-full overflow-hidden'}
       ref={parentRefWidth}
     >
-      <div className={'flex flex-col gap-4 p-3 border-b-2'}>
+      <div className={'flex flex-col p-3 border-b-2'}>
         <h1 className={'text-3xl font-bold'}>
           {selectedPlaylist.name}
         </h1>
