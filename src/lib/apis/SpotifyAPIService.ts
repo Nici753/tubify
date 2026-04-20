@@ -83,23 +83,25 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
       } while (data.next);
       const numberOfPlaylistsToImport = playlists.length;
       let numberOfImportedPlaylists = 0;
-
-      toast.info('Importing Playlists', {
+      // TODO: Make better
+      /*toast.info('Importing Playlists', {
         description:
           numberOfImportedPlaylists + ' of ' + numberOfPlaylistsToImport,
-      });
+      });*/
       for (const playlist of playlists) {
         await this.delay(1000);
         playlist.tracks = await this.getPlaylistItems(playlist.SpotifyId);
         numberOfImportedPlaylists++;
-        toast.info('Importing Playlists', {
+        // TODO: Make better
+        /*toast.info('Importing Playlists', {
           description:
             numberOfImportedPlaylists + ' of ' + numberOfPlaylistsToImport,
-        });
+        });*/
         if (numberOfImportedPlaylists === numberOfPlaylistsToImport) {
-          toast.success('Importing Playlists', {
+          // TODO: Make better
+          /*toast.success('Importing Playlists', {
             description: 'All Playlists successfully imported',
-          });
+          });*/
         }
       }
 

@@ -30,13 +30,11 @@ export function YoutubeLoginButton() {
         window.location.reload();
       } catch (error) {
         console.error('Failed to fetch user information: ' + error);
-        toast.error('Failed to fetch user information: ', {
-          description: error.message,
-        });
+        toast.error('Failed to fetch user information');
       }
     },
     onError: (errorResponse) =>
-      console.error('Youtube Login failed: ' + errorResponse),
+      console.error('YouTube Login failed: ' + errorResponse),
   });
 
   function handleLogin(): void {

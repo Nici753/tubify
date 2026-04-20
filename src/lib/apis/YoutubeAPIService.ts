@@ -96,15 +96,17 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
           ', Error: ' +
           e,
       );
-      toast.error('Failed to search for track on Youtube: ' + track.name, {
+      // TODO: Make better or remove
+      /*toast.error('Failed to search for track on Youtube: ' + track.name, {
         description: (e as Error).message,
-      });
+      });*/
     }
     return track;
   }
 
   async updatePlaylist(playlist: Playlist): Promise<Playlist> {
     const newPlaylist: Playlist = structuredClone(playlist);
+    // TODO: Make better
     toast.info('Updating playlist');
     for (const track of newPlaylist.tracks || []) {
       if (!track.YoutubeId) {
@@ -115,6 +117,7 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
         }
       }
     }
+    // TODO: Make better
     toast.success('Playlists update finished');
     return newPlaylist;
   }
@@ -176,9 +179,11 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
 
     // Export only if there's actually something new to add
     if (stillMissingTracks.tracks.length > 0) {
+      // TODO: Make better
       toast.info(`Adding ${stillMissingTracks.tracks.length} new songs to YouTube playlist`);
       await this.exportTracks(stillMissingTracks);
     } else {
+      // TODO: Make better
       toast.success('Playlist is already up to date!');
     }
   }
@@ -194,8 +199,10 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     );
 
     const data: { id: string } = await response.json();
+    // TODO: Make better
     toast.info('Created new playlist on YouTube');
 
+    // TODO: Make better
     toast.info('Adding songs to YouTube playlist');
     newPlaylist.YoutubeId = data.id;
     await this.exportTracks(newPlaylist);
@@ -212,9 +219,11 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     if (!playlistHasId(newPlaylist)) {
 
       console.error('Playlist has no YouTubeId');
+      // TODO: Make better
       toast.error('Playlist has no YouTubeId', {});
       return;
     }
+    // TODO: Make better
     toast.info('Adding songs to YouTube playlist');
     // Add songs to playlist
     for (const song of newPlaylist.tracks as TrackWithId[]) {
@@ -235,12 +244,13 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
           ', Error: ' +
           e,
         );
-        toast.error(
+        // TODO: Make better
+        /*toast.error(
           'Failed to add song to YouTube playlist: ' + song.YoutubeId,
           {
             description: e instanceof Error ? e.message: + 'could not add song to playlist',
           },
-        );
+        );*/
       }
     }
     toast.success('Playlists export finished');
