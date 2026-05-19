@@ -66,4 +66,13 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* overriding loading toast styles */
+  @layer components {
+    [data-rich-colors='true'][data-sonner-toast][data-type='loading'] {
+      background: var(--info-bg);
+      border-color: var(--info-border);
+      color: var(--info-text);
+    }
+  }
 }

@@ -19,7 +19,7 @@ This project is intended for personal and educational use only. It is designed t
 - [x] add songs to a YouTube playlist
 - [x] handle quota exceeded on update playlist
 - [x] use Ref instead of document.getElementById
-- [x] fix redux error (doesn't cause any issues yet so it can wait) -> use zustand instead with indexedDB
+- [x] fix redux error (doesn't cause any issues yet so it can wait) → use zustand instead with indexedDB
 - [x] fix Spotify login
 - [x] fix playlist export again after token refresh
 - [x] use structured copy or functions that return an object instead of referencing it
@@ -39,9 +39,10 @@ This project is intended for personal and educational use only. It is designed t
 - [x] redesign logout
 - [x] add a test mode (a button that test logs you in and adds some mock data just to see the app)
 - [x] add searchbar to modals
-- [ ] improve toasts
+- [x] improve toasts
 - [ ] write some playwright tests
-- [ ] add loading spinner
+- [x] add loading spinner
+- [ ] gray out already updated and fully published playlists
 - [ ] add progress bar
 - [ ] add skeleton
 

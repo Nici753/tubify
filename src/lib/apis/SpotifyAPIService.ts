@@ -45,6 +45,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
   }
 
   async getAllUsersPlaylist(importedPlaylists: Playlist[]) {
+    const toastImportId = toast('SpotifyImportToast');
     try {
       const user_display_name: string = await this.getUserName();
       let data: {
@@ -83,8 +84,8 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
       } while (data.next);
       const numberOfPlaylistsToImport = playlists.length;
       let numberOfImportedPlaylists = 0;
-
-      toast.info('Importing Playlists', {
+      toast.loading('Importing Playlists', {
+        id: toastImportId,
         description:
           numberOfImportedPlaylists + ' of ' + numberOfPlaylistsToImport,
       });
@@ -92,13 +93,15 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
         await this.delay(1000);
         playlist.tracks = await this.getPlaylistItems(playlist.SpotifyId);
         numberOfImportedPlaylists++;
-        toast.info('Importing Playlists', {
+        toast('Importing Playlists', {
           description:
             numberOfImportedPlaylists + ' of ' + numberOfPlaylistsToImport,
+          id: toastImportId,
         });
         if (numberOfImportedPlaylists === numberOfPlaylistsToImport) {
           toast.success('Importing Playlists', {
-            description: 'All Playlists successfully imported',
+            description: 'All '+ numberOfImportedPlaylists + ' Playlists successfully imported',
+            id: toastImportId,
           });
         }
       }
@@ -107,8 +110,7 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
     } catch (error) {
       console.error('Error fetching user playlists:', error);
       toast.error('Error fetching user playlists:', {
-        description:
-          error instanceof Error ? error.message : 'Failed to fetch playlists',
+        id: toastImportId,
       });
       return [] as Playlist[];
     }
