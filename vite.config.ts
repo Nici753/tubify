@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [react()],
+  base: '/tubify/',
   server: {
     //host: '::1', //could IPv6 for spotify auth callback
     host: '127.0.0.1', //using fixed IPv4 for spotify auth callback
