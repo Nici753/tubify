@@ -25,12 +25,12 @@ jobs:
       - name: Install Dependencies
         run: bun install --frozen-lockfile # Replaces npm ci
 
-      # 3. Build project using Bun and look for vars in .env.prod
+      # 3. Build project using Bun
       - name: Build Project
-        run: bun run build --mode prod
+        run: bun run build
         env:
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
           VITE_SPOTIFY_CLIENT_ID: ${{ secrets.VITE_SPOTIFY_CLIENT_ID }}
-          VITE_YOUTUBE_API_KEY: ${{ secrets.VITE_YOUTUBE_API_KEY }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
