@@ -1,9 +1,6 @@
-name: Deploy Tubify
+name: Deploy Project Manually
 
 on:
-  push:
-    branches:
-      - gh-pages
   workflow_dispatch:
 
 permissions:
@@ -15,20 +12,17 @@ jobs:
   # ==========================================
   build:
     runs-on: ubuntu-latest
+    container:
+      image: node:20-alpine
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
       - name: Install Dependencies
-        run: bun install --frozen-lockfile
+        run: npm ci
 
       - name: Build Project
-        run: bun run build
+        run: npm run build
         env:
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
           VITE_SPOTIFY_CLIENT_ID: ${{ secrets.VITE_SPOTIFY_CLIENT_ID }}
@@ -45,10 +39,6 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-
-    environment:
-      name: production-pages
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
