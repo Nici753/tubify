@@ -3,34 +3,52 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - gh-pages
+      - main
 
 permissions:
   contents: write
 
 jobs:
-  build-and-deploy:
+  # 1. THE BUILD JOB
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 1. Setup Bun environment using the official Oven action
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: latest # Or specify a version like '1.1.0'
+          bun-version: latest
 
-      # 2. Install dependencies using Bun
       - name: Install Dependencies
-        run: bun install --frozen-lockfile # Replaces npm ci
+        run: bun install --frozen-lockfile
 
-      # 3. Build project using Bun
       - name: Build Project
         run: bun run build
         env:
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
           VITE_SPOTIFY_CLIENT_ID: ${{ secrets.VITE_SPOTIFY_CLIENT_ID }}
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-build
+          path: ./dist
+
+  # 2. THE DEPLOYMENT JOB
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: production-build
+          path: ./dist
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
