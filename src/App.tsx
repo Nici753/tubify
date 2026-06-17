@@ -8,7 +8,7 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<View />} />
+          <Route path="/tubify" element={<View />} />
           <Route path="/callback" element={<SpotifyCallback />} />
         </Routes>
       </BrowserRouter>
