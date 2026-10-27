@@ -1,17 +1,21 @@
 import { Button } from '../ui/button.tsx';
 
-export function MockButton() {
-  // not using zustand or stores here for simplicity
-  async function setMockData() {
-    // Fetch the raw content from the public folder
-    // Note: Using .text() keeps the string exactly as it is in the file
-    const [userRes, playlistRes] = await Promise.all([
-      fetch('/mocks/user-data-mock.json'),
-      fetch('/mocks/playlists-data-mock.json') // I assumed .json here for easy fetching
-    ]);
+const base = import.meta.env.BASE_URL;
 
-    const userDataRaw = await userRes.text();
-    const playlistDataRaw = await playlistRes.text();
+async function fetchMock(name: string): Promise<string> {
+  const res = await fetch(`${base}mocks/${name}`);
+  // GitHub Pages and the nginx preview answer missing files with the HTML 404
+  // page, so check the status instead of storing HTML as "data"
+  if (!res.ok) throw new Error(`Failed to load ${name}: ${res.status}`);
+  return res.text();
+}
+
+export function MockButton() {
+  async function setMockData() {
+    const [userDataRaw, playlistDataRaw] = await Promise.all([
+      fetchMock('user-data-mock.json'),
+      fetchMock('playlists-data-mock.json'),
+    ]);
 
     localStorage.clear();
     localStorage.setItem('user-data', userDataRaw);
@@ -19,8 +23,8 @@ export function MockButton() {
     window.location.reload();
   }
 
-  return(
-    <Button className={'mr-3'} variant="outline" onClick={setMockData}>
+  return (
+    <Button className="mr-3" variant="outline" onClick={setMockData}>
       Mock UI
     </Button>
   );
