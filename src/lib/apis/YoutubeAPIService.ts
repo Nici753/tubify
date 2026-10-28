@@ -48,13 +48,16 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
   private readonly toastUpdateId = 'YoutubeUpdateToast';
   private readonly toastErrorId = 'YoutubeErrorToast';
 
-  youtubeToken = useUserStore((state) => state.youtube_access_token);
+  private get youtubeToken() {
+    return useUserStore.getState().youtube_access_token;
+  }
 
   async youtubeGetRequest(endpoint: string): Promise<Response> {
     const request: Request = new Request(
       `https://www.googleapis.com/youtube/v3${endpoint}`,
       {
         method: 'GET',
+
         headers: {
           Authorization: `Bearer ${this.youtubeToken}`,
         },

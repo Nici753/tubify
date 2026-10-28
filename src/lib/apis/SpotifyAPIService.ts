@@ -27,7 +27,9 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
     return SpotifyAPIService.instance;
   }
 
-  spotifyToken = useUserStore((state) => state.spotify_access_token);
+  private get spotifyToken() {
+    return useUserStore.getState().spotify_access_token;
+  }
   baseURL: string = 'https://api.spotify.com/v1';
 
   async fetchFromSpotify(requestURL: string): Promise<Response> {
@@ -100,7 +102,10 @@ export class SpotifyAPIService implements SpotifyAPIInterface {
         });
         if (numberOfImportedPlaylists === numberOfPlaylistsToImport) {
           toast.success('Importing Playlists', {
-            description: 'All '+ numberOfImportedPlaylists + ' Playlists successfully imported',
+            description:
+              'All ' +
+              numberOfImportedPlaylists +
+              ' Playlists successfully imported',
             id: toastImportId,
           });
         }

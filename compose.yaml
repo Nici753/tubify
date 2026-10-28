@@ -1,0 +1,30 @@
+name: tubify
+
+services:
+  # Dev server with hot reload:  docker compose up dev
+  dev:
+    build:
+      context: .
+      target: dev
+    ports:
+      # Bound to 127.0.0.1 on purpose: Spotify only accepts loopback-IP redirect URIs
+      - "127.0.0.1:5173:5173"
+    volumes:
+      - .:/app             # live source for hot reload (also provides .env.development to Vite)
+      - /app/node_modules  # keep the container's node_modules, not the host's
+
+  # Production build behind nginx:  docker compose up --build preview
+  # -> http://127.0.0.1:8080/tubify/
+  preview:
+    profiles: ["preview"]
+    build:
+      context: .
+      target: preview
+      secrets:
+        - env_production
+    ports:
+      - "127.0.0.1:8080:80"
+
+secrets:
+  env_production:
+    file: ./.env.production

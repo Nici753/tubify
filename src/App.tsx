@@ -6,7 +6,7 @@ import { SpotifyCallback } from './components/login/spotify-callback.tsx';
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Routes>
           <Route path="/" element={<View />} />
           <Route path="/callback" element={<SpotifyCallback />} />
