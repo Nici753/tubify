@@ -56,7 +56,7 @@ export class YoutubeAPIService implements YoutubeAPIInterface {
     const request: Request = new Request(
       `https://www.googleapis.com/youtube/v3${endpoint}`,
       {
-        method: 'GET',  youtubeToken,
+        method: 'GET',
 
         headers: {
           Authorization: `Bearer ${this.youtubeToken}`,

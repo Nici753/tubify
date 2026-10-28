@@ -12,9 +12,6 @@ export default defineConfig(({ mode }) => ({
     host: '127.0.0.1', //using fixed IPv4 for spotify auth callback
     port: 5173,
   },
-  build: {
-    sourcemap: true, // temporary, for debugging: remove before you push dist/
-  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
