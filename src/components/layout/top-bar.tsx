@@ -22,7 +22,7 @@ export function TopBar() {
       {!youtubeLoggedIn && <YoutubeLoginButton />}
       {(youtubeLoggedIn || spotifyLoggedIn) && <LogoutButton />}
       {!(youtubeLoggedIn || spotifyLoggedIn) && <MockButton />}
-      <div className="flex-auto content-center">{user_name && <NameTag />}</div>
+      <div className="flex-auto content-center mr-1">{user_name && <NameTag />}</div>
     </div>
   );
 }
