@@ -22,6 +22,8 @@ export function Content() {
     const updateParentWidth = () => {
       if (!parentRefWidth.current) {
         return null;
+      } else if (parentRefWidth.current.clientWidth <= 324) {
+        setParentWidth(200);
       } else {
         setParentWidth(parentRefWidth.current.clientWidth - 124);
       }
