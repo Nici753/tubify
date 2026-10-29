@@ -23,7 +23,7 @@ export const Sidebar: React.FC = () => {
   return (
     <div className="flex flex-col p-3 border-r-2 h-full w-full overflow-hidden">
       <Searchbar value={searchQuery} onChange={setSearchQuery} />
-      <h2 className="text-2xl font-bold pt-6 mb-4">Your Playlists</h2>
+      <h2 className="text-2xl font-bold pt-6 mb-4 hidden sm:inline">Your Playlists</h2>
       <ScrollArea className="h-[calc(100%-3rem)] w-full">
         <div className="grid grid-cols-1 gap-2 pr-4">
           {filteredPlaylists.length > 0 ? (
