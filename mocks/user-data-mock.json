@@ -1,0 +1,12 @@
+{
+  "state": {
+    "spotify_access_token": "AVeryCoolSpotifyAccessToken",
+    "spotify_refresh_token": "AVeryCoolSpotifyRefreshToken",
+    "spotify_token_expiry": "1775161110548",
+    "youtube_access_token": "AVeryCoolYouTubeAccessToken",
+    "user_name": "Don Joe",
+    "user_email": "don-j@mail.com",
+    "user_picture": "https://picsum.photos/id/111/64/"
+  },
+  "version": 0
+}
