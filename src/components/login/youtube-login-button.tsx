@@ -44,8 +44,8 @@ export function YoutubeLoginButton() {
   return (
     <div className={'mr-3'}>
       <Button variant="outline" onClick={handleLogin}>
-        <YouTubeIcon className={'h-[1.2rem] w-[1.2rem] mr-1'} />
-        Login with YouTube
+        <YouTubeIcon className={'h-[1.2rem] w-[1.2rem]'} />
+        <span className="hidden sm:inline ml-1">Login with YouTube</span>
       </Button>
     </div>
   );
