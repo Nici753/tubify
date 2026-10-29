@@ -52,8 +52,8 @@ export function SpotifyLoginButton() {
   return (
     <div className={'mr-3'}>
       <Button variant="outline" onClick={handleLogin}>
-        <SpotifyIcon className={'h-[1.2rem] w-[1.2rem] mr-1'} />
-        Add Spotify Account
+        <SpotifyIcon className={'h-[1.2rem] w-[1.2rem]'} />
+        <span className="hidden sm:inline ml-1">Add Spotify Account</span>
       </Button>
     </div>
   );

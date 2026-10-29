@@ -22,6 +22,8 @@ export function Content() {
     const updateParentWidth = () => {
       if (!parentRefWidth.current) {
         return null;
+      } else if (parentRefWidth.current.clientWidth <= 324) {
+        setParentWidth(200);
       } else {
         setParentWidth(parentRefWidth.current.clientWidth - 124);
       }
@@ -69,26 +71,23 @@ export function Content() {
             filteredSongs.map((song: Track) => (
               <div
                 key={song.SpotifyId}
-                className={'flex items-center space-x-4 p-1 group'}
+                className={'flex items-center gap-4 p-1 group'}
               >
                 <CirclePlay
                   className={
-                    'w-8 h-8 opacity-0 group-hover:opacity-100 hover:cursor-pointer transition-opacity'
+                    'hidden md:block shrink-0 w-8 h-8 opacity-0 group-hover:opacity-100 hover:cursor-pointer transition-opacity'
                   }
                   onClick={(): void => setCurrentSong(song.SpotifyId)}
                 />
                 <img
                   src={song.imageUrl}
                   alt={song.name}
-                  className={'w-12 h-12 rounded'}
+                  className={'shrink-0 w-12 h-12 rounded'}
+                  onClick={(): void => setCurrentSong(song.SpotifyId)}
                 />
-                <div className={'flex flex-col truncate'}>
-                  <span className={'text-left truncate font-medium'}>{song.name}</span>
-                  <span
-                    className={
-                      'text-left text-sm text-zinc-800 dark:text-gray-400 truncate'
-                    }
-                  >
+                <div className={'flex flex-col flex-1 min-w-0 text-left'}>
+                  <span className={'truncate font-medium'}>{song.name}</span>
+                  <span className={'truncate text-sm text-zinc-800 dark:text-gray-400'}>
                     {song.artists?.join(', ')}
                   </span>
                 </div>
